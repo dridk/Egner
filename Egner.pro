@@ -13,9 +13,15 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    genotype.cpp \
+    phenotype.cpp \
+    entity.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    genotype.h \
+    phenotype.h \
+    entity.h
 
 FORMS    += mainwindow.ui
 
