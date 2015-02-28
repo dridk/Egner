@@ -3,11 +3,11 @@
 #include <QDebug>
 #include "genotype.h"
 #include "phenotype.h"
-
+#include <QDateTime>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
+    qsrand(QDateTime::currentDateTime ().toTime_t ());
     QVector<int> genotype;
     genotype.append(0);
     genotype.append(0);
@@ -22,27 +22,15 @@ int main(int argc, char *argv[])
     genotype.append(4);
 
 
-
     Genotype g(genotype);
+    Genotype g2;
 
-    QVector<int> phenotype;
-    phenotype.append(1);
-    phenotype.append(1);
-    phenotype.append(-1);
-
-    Phenotype p(phenotype);
+    Genotype child = g + g2;
 
     qDebug()<<g.toString();
-    qDebug()<<p.toString();
 
+    qDebug()<<child.toString();
 
-
-//    qDebug()<<g.toString();
-//    qDebug()<<p.toString();
-
-   Phenotype n = p * g;
-
-   qDebug()<<n.toString();
 
 
     //    MainWindow w;

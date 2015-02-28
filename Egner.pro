@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     genotype.cpp \
     phenotype.cpp \
-    entity.cpp
+    entity.cpp \
+    simulator.cpp
 
 HEADERS  += mainwindow.h \
     genotype.h \
     phenotype.h \
-    entity.h
+    entity.h \
+    simulator.h
 
 FORMS    += mainwindow.ui
 

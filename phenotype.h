@@ -5,18 +5,18 @@
 class Phenotype
 {
 public:
-    Phenotype(int geneCount=3);
-    Phenotype(const QVector<int>& vector);
+    Phenotype(const QVector<int>& vector = QVector<int>(3,0));
     ~Phenotype();
     int at(int i);
     void set(int i, int value);
     int geneCount() const;
     QString toString() const;
     const QVector<int>& toVector() const;
+    void fromVector(QVector<int> vector);
 
 
+    Phenotype operator*(const Genotype& other);
 
-    Phenotype operator*(const Genotype& genotype);
 
 private:
     QVector<int> mVector;

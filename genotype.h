@@ -5,16 +5,16 @@
 class Genotype
 {
 public:
-    Genotype(int geneCount = 3);
-    Genotype(const QVector<int>& vector);
+    Genotype(const QVector<int>& vector = QVector<int>(9,0));
     ~Genotype();
     int at(int x, int y);
     void set(int x, int y, int value);
     QString toString() const;
     int geneCount() const;
     const QVector<int> &toVector() const;
+    void fromVector(QVector<int> vector);
 
-
+    Genotype operator+(const Genotype& other);
 
 
 private:

@@ -1,14 +1,6 @@
 #include "genotype.h"
 #include <QDebug>
 #include <QtMath>
-Genotype::Genotype(int geneCount):
-    mGeneCount(geneCount)
-{
-
-    mVector.fill(0,mGeneCount*mGeneCount);
-
-
-}
 
 Genotype::Genotype(const QVector<int> &vector)
 {
@@ -19,7 +11,7 @@ Genotype::Genotype(const QVector<int> &vector)
 
 Genotype::~Genotype()
 {
-
+    mVector.clear();
 }
 
 int Genotype::at(int x, int y)
@@ -59,6 +51,36 @@ int Genotype::geneCount() const
 const QVector<int> &Genotype::toVector() const
 {
     return mVector;
+}
+
+void Genotype::fromVector(QVector<int> vector)
+{
+    mVector = vector;
+}
+
+Genotype Genotype::operator+(const Genotype &other)
+{
+
+    Q_ASSERT_X(other.geneCount() == geneCount(), "Genotype","Genotype are not compatible. Not same matrix");
+
+    QVector<int> vector;
+
+    for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
+
+        if(qrand()%2)
+           vector<<other.toVector().mid(i,geneCount());
+        else
+           vector<<toVector().mid(i,geneCount());
+
+
+
+
+
+    }
+
+
+return Genotype(vector);
+
 }
 
 
