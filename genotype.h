@@ -6,6 +6,8 @@ class Genotype
 {
 public:
     Genotype();
+    Genotype(const QVector<double>& v);
+    Genotype(const QString& raw);
     ~Genotype();
     double at(int x, int y);
     void set(int x, int y, double value);
@@ -17,10 +19,7 @@ public:
     void mutate();
 
     const QVector<double> &vector() const;
-    void fromVector(QVector<double> vector);
-
     QString raw() const;
-    void fromRaw(const QString& raw);
     void clear();
 
 

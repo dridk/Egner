@@ -4,6 +4,20 @@ Phenotype::Phenotype()
 {
 }
 
+Phenotype::Phenotype(const QVector<int> &vector)
+{
+    foreach( int v, vector)
+        append(v);
+
+}
+
+Phenotype::Phenotype(const QString &raw)
+{
+    foreach (QString v, raw.split(","))
+        append(v.toInt());
+
+}
+
 Phenotype::~Phenotype()
 {
     clear();
@@ -40,25 +54,6 @@ const QVector<int>& Phenotype::vector() const
     return mVector;
 }
 
-void Phenotype::fromVector(QVector<int> vector)
-{
-    clear();
-    foreach( int v, vector) {
-        append(v);
-    }
-
-}
-
-void Phenotype::fromRaw(const QString &raw)
-{
-    clear();
-    foreach (QString v, raw.split(","))
-    {
-        append(v.toInt());
-    }
-
-}
-
 QString Phenotype::raw() const
 {
     QStringList raw;
@@ -83,9 +78,7 @@ Phenotype Phenotype::operator*(const Genotype &other)
         index++;
     }
 
-    Phenotype newPhenotype;
-    newPhenotype.fromVector(newVector);
-    return newPhenotype;
+    return Phenotype(newVector);
 
 }
 

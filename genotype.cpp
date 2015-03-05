@@ -8,6 +8,27 @@ Genotype::Genotype()
     setMutationRange(1);
 }
 
+Genotype::Genotype(const QVector<double> &v)
+{
+    mVector = v;
+    setMutationProbability(1);
+    setMutationRange(1);
+}
+
+Genotype::Genotype(const QString &raw)
+{
+    int count = raw.split(",").size();
+    Q_ASSERT_X(isSquare(count),"Genotype","data count should be squared");
+
+    clear();
+    QStringList list = raw.split(",");
+    foreach (QString v, list)
+        append(v.toDouble());
+
+    setMutationProbability(1);
+    setMutationRange(1);
+}
+
 Genotype::~Genotype()
 {
     clear();
@@ -77,10 +98,7 @@ const QVector<double> &Genotype::vector() const
     return mVector;
 }
 
-void Genotype::fromVector(QVector<double> vector)
-{
-    mVector = vector;
-}
+
 
 QString Genotype::raw() const
 {
@@ -90,18 +108,7 @@ QString Genotype::raw() const
     return raw.join(",");
 }
 
-void Genotype::fromRaw(const QString &raw)
-{
-    int count = raw.split(",").size();
-    Q_ASSERT_X(isSquare(count),"Genotype::fromRaw","data count should be squared");
 
-    clear();
-    QStringList list = raw.split(",");
-    foreach (QString v, list)
-        append(v.toDouble());
-
-
-}
 
 void Genotype::clear()
 {
@@ -123,9 +130,7 @@ Genotype Genotype::operator+(const Genotype &other)
 
     }
 
-    Genotype newGenotype;
-    newGenotype.fromVector(v);
-    return newGenotype;
+   return Genotype(v);
 }
 
 bool Genotype::isSquare(int value)
