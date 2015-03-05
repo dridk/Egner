@@ -15,12 +15,11 @@ public:
     Entity *at(int index) const;
     Entity *operator[](int i);
     int count() const;
-    void init(double mean, double sd, int count);
+    void init(int count, int mean=0, int sd=1, int geneCount=3);
     bool run(int iteration = 1);
 
+
     QString toString() const;
-
-
     QList<Entity*> randomParent(int count = 2);
 
 private:

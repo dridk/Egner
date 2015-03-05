@@ -27,7 +27,7 @@ void Phenotype::append(int value)
 
 int Phenotype::geneCount() const
 {
-    return toVector().size();
+    return vector().size();
 }
 
 void Phenotype::setGeneCount(int count)
@@ -36,7 +36,7 @@ void Phenotype::setGeneCount(int count)
     mVector.fill(1,count);
 }
 
-const QVector<int>& Phenotype::toVector() const
+const QVector<int>& Phenotype::vector() const
 {
     return mVector;
 }
@@ -60,10 +60,10 @@ void Phenotype::fromRaw(const QString &raw)
 
 }
 
-QString Phenotype::toRaw() const
+QString Phenotype::raw() const
 {
     QStringList raw;
-    foreach (int v, toVector()){
+    foreach (int v, vector()){
         raw.append(QString::number(v));
     }
     return raw.join(",");
@@ -72,16 +72,15 @@ QString Phenotype::toRaw() const
 Phenotype Phenotype::operator*(const Genotype &other)
 {
     Q_ASSERT_X(other.geneCount()==geneCount(), "Phenotype","Phenotype and genotype have not the same genecount");
+
     QVector<int> newVector(geneCount(),0);
     int index = 0;
     // Genotype cross Phenotype => Matrice cross Vector
-    foreach (int m , other.toVector()){
+    foreach (int m , other.vector()){
         int key  = index / geneCount();
         int mod  = index % geneCount();
-        int v = toVector().at(mod);
-
+        int v = vector().at(mod);
         newVector[key] += m * v;
-
         index++;
     }
 

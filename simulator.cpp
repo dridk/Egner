@@ -35,30 +35,28 @@ int Simulator::count() const
     return mEntities.count();
 }
 
-void Simulator::init(double mean, double sd, int count)
+void Simulator::init(int count, int mean, int sd, int geneCount)
 {
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(mean,sd);
 
-    int geneCount = 3 ;
-
+    // Create 'count' entity....
     for (int i=0; i<count; ++i) {
 
-        Entity * e = new Entity;
+        //Create random genotype
+        Genotype genotype(geneCount);
 
-        QVector <double> vector;
-        for (int j=0; j<geneCount*geneCount; ++j){
+        for (int j=0; j<geneCount * geneCount; ++j){
             double number = qRound(distribution(generator)*10);
-            vector.append(number);
+            genotype.append(number);
         }
-
-        e->genotype().fromVector(vector);
-        append(e);
-
-
+        append(new Entity(genotype));
     }
 
 }
+
+
+
 
 bool Simulator::run(int iteration)
 {
@@ -69,7 +67,7 @@ bool Simulator::run(int iteration)
 
 
 
-return false;
+    return false;
 
 
 
@@ -98,7 +96,7 @@ QList<Entity*> Simulator::randomParent(int count)
         indexes.removeAt(id);
     }
 
-return parents;
+    return parents;
 
 }
 

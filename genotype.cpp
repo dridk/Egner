@@ -44,7 +44,7 @@ void Genotype::setGeneCount(int count)
     mVector.fill(0, count*count);
 }
 
-const QVector<double> &Genotype::toVector() const
+const QVector<double> &Genotype::vector() const
 {
     return mVector;
 }
@@ -54,16 +54,19 @@ void Genotype::fromVector(QVector<double> vector)
     mVector = vector;
 }
 
-QString Genotype::toRaw() const
+QString Genotype::raw() const
 {
     QStringList raw;
-    foreach (double v , toVector())
+    foreach (double v , vector())
         raw.append(QString::number(v));
     return raw.join(",");
 }
 
 void Genotype::fromRaw(const QString &raw)
 {
+    int count = raw.split(",").size();
+    Q_ASSERT_X(isSquare(count),"Genotype::fromRaw","data count should be squared");
+
     clear();
     QStringList list = raw.split(",");
     foreach (QString v, list)
@@ -81,22 +84,31 @@ Genotype Genotype::operator+(const Genotype &other)
 {
 
     Q_ASSERT_X(other.geneCount() == geneCount(), "Genotype","Genotype are not compatible. Not same matrix");
-
-    QVector<double> vector;
+    QVector<double> v;
 
     for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
 
         if(qrand()%2)
-            vector<<other.toVector().mid(i,geneCount());
+            v<<other.vector().mid(i,geneCount());
         else
-            vector<<toVector().mid(i,geneCount());
+            v<<vector().mid(i,geneCount());
 
     }
 
-
     Genotype newGenotype;
-    newGenotype.fromVector(vector);
+    newGenotype.fromVector(v);
     return newGenotype;
+}
+
+bool Genotype::isSquare(int value)
+{
+
+    if ( (qSqrt(value) * qSqrt(value)) == value)
+        return true;
+
+    return false;
+
+
 }
 
 

@@ -13,10 +13,10 @@ public:
     void append(int value);
     int geneCount() const;
     void setGeneCount(int count=3);
-    const QVector<int>& toVector() const;
+    const QVector<int>& vector() const;
     void fromVector(QVector<int> vector);
     void fromRaw(const QString& raw);
-    QString toRaw() const;
+    QString raw() const;
     Phenotype operator*(const Genotype& other);
     void clear();
 

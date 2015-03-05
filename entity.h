@@ -8,11 +8,11 @@ class Entity
 public:
     Entity(int geneCount=3);
     Entity(const Genotype& g);
+    Entity(const Genotype &g, Phenotype& p);
     ~Entity();
 
     Genotype &genotype();
     Phenotype &phenotype();
-
 
 
     bool isViable();
@@ -23,7 +23,7 @@ public:
 
 
     const QString &name();
-    QString toString() const;
+    QString raw();
 
 
 

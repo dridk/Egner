@@ -2,7 +2,6 @@
 #include <QUuid>
 Entity::Entity(int geneCount)
 {
-
     mPhenotype.setGeneCount(geneCount);
     mGenotype.setGeneCount(geneCount);
 }
@@ -11,6 +10,12 @@ Entity::Entity(const Genotype &g)
 {
     mGenotype  = g;
     mPhenotype.setGeneCount(g.geneCount());
+}
+
+Entity::Entity(const Genotype &g, Phenotype &p)
+{
+    mGenotype = g;
+    mPhenotype = p;
 }
 
 Entity::~Entity()
@@ -31,21 +36,20 @@ Phenotype &Entity::phenotype()
 bool Entity::isViable()
 {
     QSet<QString> history;
-    QString current = mPhenotype.toRaw();
+    QString current = mPhenotype.raw();
     QString old;
     while (!history.contains(current)) {
 
-        history.insert(mPhenotype.toRaw());
-        old = mPhenotype.toRaw();
+        history.insert(mPhenotype.raw());
+        old = mPhenotype.raw();
         mPhenotype = phenotype() * genotype();
-        current = mPhenotype.toRaw();
+        current = mPhenotype.raw();
     }
 
     if ( old == current)
         return true;
-    else return false;
-
-
+    else
+        return false;
 }
 
 int Entity::geneCount()
@@ -73,12 +77,14 @@ const QString &Entity::name()
     return mName;
 }
 
-QString Entity::toString() const
+QString Entity::raw()
 {
     QString out;
+    out.append(genotype().raw());
+    out.append("\\");
+    out.append(phenotype().raw());
 
     return out;
-
 
 
 }

@@ -13,15 +13,18 @@ public:
     int geneCount() const;
     void setGeneCount(int count=3);
 
-    const QVector<double> &toVector() const;
+    const QVector<double> &vector() const;
     void fromVector(QVector<double> vector);
 
-    QString toRaw() const;
+    QString raw() const;
     void fromRaw(const QString& raw);
     void clear();
 
 
     Genotype operator+(const Genotype& other);
+
+
+    static bool isSquare(int value);
 
 
 private:
