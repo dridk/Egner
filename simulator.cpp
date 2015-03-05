@@ -1,8 +1,8 @@
 #include "simulator.h"
 #include <QDebug>
-Simulator::Simulator()
+Simulator::Simulator(int maxCount)
 {
-
+    mMaxCount = maxCount;
 }
 
 Simulator::~Simulator()
@@ -30,6 +30,11 @@ Entity *Simulator::operator[](int i)
     return mEntities[i];
 }
 
+int Simulator::maxCount() const
+{
+    return mMaxCount;
+}
+
 int Simulator::count() const
 {
     return mEntities.count();
@@ -55,19 +60,30 @@ void Simulator::init(int count, int mean, int sd, int geneCount)
 
 }
 
-
-
-
-bool Simulator::run(int iteration)
+void Simulator::run(int iteration)
 {
-    QList<Entity*> mNextEntities;
+    for (int step=0; step<iteration ; ++step)
+    {
+        qDebug()<<QString("==== Step %1").arg(step);
 
+        QList<Entity*> nextGeneration;
+        int killCount = 0;
 
+        while ( nextGeneration.count() < maxCount())
+        {
+            Entity * child = Entity::childFromParent(randomParent());
+            if (child->isViable())
+                nextGeneration.append(child);
 
+            killCount++;
 
+        }
 
+        mEntities.clear();
+        mEntities = nextGeneration;
 
-    return false;
+        qDebug()<<QString("total kill count:    %1").arg(killCount);
+    }
 
 
 

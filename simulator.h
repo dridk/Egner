@@ -7,7 +7,7 @@
 class Simulator
 {
 public:
-    Simulator();
+    Simulator(int maxCount = 300);
     ~Simulator();
 
     void append(Entity * e);
@@ -15,8 +15,9 @@ public:
     Entity *at(int index) const;
     Entity *operator[](int i);
     int count() const;
+    int maxCount() const;
     void init(int count, int mean=0, int sd=1, int geneCount=3);
-    bool run(int iteration = 1);
+    void run(int iteration = 1);
 
 
     QString toString() const;
@@ -24,6 +25,7 @@ public:
 
 private:
     QList<Entity*> mEntities;
+    int mMaxCount;
 };
 
 #endif // SIMULATOR_H
