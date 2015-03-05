@@ -20,14 +20,16 @@ SOURCES += main.cpp\
     phenotype.cpp \
     entity.cpp \
     simulator.cpp \
-    abstractwatcher.cpp
+    abstractwatcher.cpp \
+    genotypewidget.cpp
 
 HEADERS  += mainwindow.h \
     genotype.h \
     phenotype.h \
     entity.h \
     simulator.h \
-    abstractwatcher.h
+    abstractwatcher.h \
+    genotypewidget.h
 
 FORMS    += mainwindow.ui
 

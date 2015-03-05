@@ -13,43 +13,6 @@ int main(int argc, char *argv[])
 
 
 
-
-
-    Simulator sim;
-
-    sim.init(300);
-
-    sim.run(100);
-
-
-    qDebug()<<sim[0]->genotype().geneCount();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //    MainWindow w;
     //    w.show();
 

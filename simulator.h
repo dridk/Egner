@@ -3,11 +3,13 @@
 #include "entity.h"
 #include <QList>
 #include <random>
+#include <QObject>
 
-class Simulator
+class Simulator : public QObject
 {
+    Q_OBJECT
 public:
-    Simulator(int maxCount = 300);
+    Simulator(QObject * parent = 0, int maxCount = 300);
     ~Simulator();
 
     void append(Entity * e);
@@ -18,10 +20,14 @@ public:
     int maxCount() const;
     void init(int count, int mean=0, int sd=1, int geneCount=3);
     void run(int iteration = 1);
-
-
     QString toString() const;
     QList<Entity*> randomParent(int count = 2);
+
+signals:
+    void started();
+    void running();
+    void finished();
+
 
 private:
     QList<Entity*> mEntities;

@@ -1,6 +1,7 @@
 #include "simulator.h"
 #include <QDebug>
-Simulator::Simulator(int maxCount)
+Simulator::Simulator(QObject * parent, int maxCount)
+    :QObject(parent)
 {
     mMaxCount = maxCount;
 }
@@ -42,6 +43,7 @@ int Simulator::count() const
 
 void Simulator::init(int count, int mean, int sd, int geneCount)
 {
+    mMaxCount = count;
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(mean,sd);
 
@@ -64,12 +66,16 @@ void Simulator::init(int count, int mean, int sd, int geneCount)
 
 void Simulator::run(int iteration)
 {
+    emit started();
+
     for (int step=0; step<iteration ; ++step)
     {
         qDebug()<<QString("==== Step %1").arg(step);
 
         QList<Entity*> nextGeneration;
         int killCount = 0;
+
+        emit running();
 
         while ( nextGeneration.count() < maxCount())
         {
@@ -89,6 +95,8 @@ void Simulator::run(int iteration)
 
         mEntities.clear();
         mEntities = nextGeneration;
+
+        emit finished();
 
         qDebug()<<QString("total kill count:    %1").arg(killCount);
     }
