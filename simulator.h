@@ -3,6 +3,7 @@
 #include "entity.h"
 #include <QList>
 
+
 class Simulator
 {
 public:
@@ -11,8 +12,8 @@ public:
 
     void addEntity(Entity * e);
     void remEntity(Entity* e);
-
     int count() const;
+    bool run(int iteration = 1);
 
 private:
     QList<Entity*> mEntities;

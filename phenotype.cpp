@@ -1,9 +1,8 @@
 #include "phenotype.h"
 
-Phenotype::Phenotype(const QVector<int> &vector)
+Phenotype::Phenotype(int geneCount)
 {
-    mVector = vector;
-    mGeneCount = mVector.length();
+    setGeneCount(geneCount);
 }
 
 Phenotype::~Phenotype()
@@ -23,7 +22,12 @@ void Phenotype::set(int i, int value)
 
 int Phenotype::geneCount() const
 {
-    return mGeneCount;
+    return mVector.size();
+}
+
+void Phenotype::setGeneCount(int count)
+{
+    mVector.fill(0,count);
 }
 
 QString Phenotype::toString()const
@@ -44,7 +48,6 @@ const QVector<int>& Phenotype::toVector() const
 void Phenotype::fromVector(QVector<int> vector)
 {
     mVector = vector;
-    mGeneCount = vector.length();
 }
 
 Phenotype Phenotype::operator*(const Genotype &other)
@@ -63,9 +66,33 @@ Phenotype Phenotype::operator*(const Genotype &other)
         index++;
     }
 
-    Phenotype newPhenotype(newVector);
+    Phenotype newPhenotype;
+    newPhenotype.fromVector(newVector);
     return newPhenotype;
 
 }
+
+QString Phenotype::hash() const
+{
+    QString hash;
+    foreach (int v, toVector()){
+        hash.append(QString::number(v));
+
+    }
+
+    return hash;
+
+}
+
+QVector<int> Phenotype::toNormalVector() const
+{
+    QVector<int> nv;
+    foreach (int v, toVector()){
+        nv.append(v >= 0 ? 1 : -1);
+    }
+
+    return nv;
+}
+
 
 

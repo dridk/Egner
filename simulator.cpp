@@ -1,5 +1,5 @@
 #include "simulator.h"
-
+#include <QDebug>
 Simulator::Simulator()
 {
 
@@ -23,5 +23,24 @@ void Simulator::remEntity(Entity *e)
 int Simulator::count() const
 {
     return mEntities.count();
+}
+
+bool Simulator::run(int iteration)
+{
+
+    for (int i=0; i< iteration; ++i) {
+        foreach (Entity * entity, mEntities) {
+
+            qDebug()<<entity->name()<<" "<<entity->phenotype().hash();
+            if (entity->run())
+                entity->killLater();
+        }
+
+    }
+
+
+
+
+
 }
 

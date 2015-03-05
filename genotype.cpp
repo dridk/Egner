@@ -2,11 +2,10 @@
 #include <QDebug>
 #include <QtMath>
 
-Genotype::Genotype(const QVector<int> &vector)
+Genotype::Genotype(int geneCount)
 {
-    Q_ASSERT_X(qSqrt(vector.length()),"Genotype constructor", "Vector must be a pow of 2! Life 3x3=9 or 4x4=16");
-    mVector = vector;
-    mGeneCount = qSqrt(vector.length());
+    setGeneCount(geneCount);
+
 }
 
 Genotype::~Genotype()
@@ -33,8 +32,7 @@ void Genotype::set(int x, int y, int value)
 QString Genotype::toString() const
 {
     QString out;
-    out.append("\n");
-    for (int i=0; i<mGeneCount*mGeneCount; ++i) {
+    for (int i=0; i<mVector.size(); ++i) {
         out.append(QString::number(mVector[i]));
         out.append(",");
         if (i%mGeneCount == mGeneCount-1)
@@ -45,7 +43,12 @@ QString Genotype::toString() const
 
 int Genotype::geneCount() const
 {
-    return mGeneCount;
+    return qSqrt(mVector.count());
+}
+
+void Genotype::setGeneCount(int count)
+{
+    mVector.fill(0, count*count);
 }
 
 const QVector<int> &Genotype::toVector() const
@@ -72,15 +75,12 @@ Genotype Genotype::operator+(const Genotype &other)
         else
            vector<<toVector().mid(i,geneCount());
 
-
-
-
-
     }
 
 
-return Genotype(vector);
-
+    Genotype newGenotype;
+    newGenotype.fromVector(vector);
+    return newGenotype;
 }
 
 
