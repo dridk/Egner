@@ -23,6 +23,8 @@ public:
     QString toString() const;
     QList<Entity*> randomParent(int count = 2);
 
+    QList<double> deads();
+
 signals:
     void started();
     void running();
@@ -31,6 +33,7 @@ signals:
 
 private:
     QList<Entity*> mEntities;
+    QList<double> mDeads;
     int mMaxCount;
 };
 

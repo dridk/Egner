@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui testlib
+QT       += core gui testlib printsupport
 QMAKE_CXXFLAGS += -std=c++11
 
 
@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     entity.cpp \
     simulator.cpp \
     abstractwatcher.cpp \
-    genotypewidget.cpp
+    genotypewidget.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     genotype.h \
@@ -29,7 +30,8 @@ HEADERS  += mainwindow.h \
     entity.h \
     simulator.h \
     abstractwatcher.h \
-    genotypewidget.h
+    genotypewidget.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui
 

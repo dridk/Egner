@@ -92,7 +92,7 @@ void Simulator::run(int iteration)
                 killCount++;
 
         }
-
+        mDeads.append(killCount);
         mEntities.clear();
         mEntities = nextGeneration;
 
@@ -129,6 +129,12 @@ QList<Entity*> Simulator::randomParent(int count)
     }
 
     return parents;
+
+}
+
+QList<double> Simulator::deads()
+{
+    return mDeads;
 
 }
 
