@@ -5,7 +5,7 @@
 class Phenotype
 {
 public:
-    Phenotype(int geneCount = 3);
+    Phenotype();
     ~Phenotype();
 
     int at(int i);

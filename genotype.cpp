@@ -2,9 +2,10 @@
 #include <QDebug>
 #include <QtMath>
 
-Genotype::Genotype(int geneCount)
+Genotype::Genotype()
 {
-    setGeneCount(geneCount);
+    setMutationProbability(1);
+    setMutationRange(1);
 }
 
 Genotype::~Genotype()
@@ -42,6 +43,33 @@ int Genotype::geneCount() const
 void Genotype::setGeneCount(int count)
 {
     mVector.fill(0, count*count);
+}
+
+void Genotype::setMutationProbability(double p)
+{
+    Q_ASSERT_X(p>=0 && p<=1, "Genotype::setMutationProbability", "probability should be in range 0 - 1");
+    mMutationProbability = p;
+}
+
+void Genotype::setMutationRange(double r)
+{
+    mMutationRange = r;
+}
+
+void Genotype::mutate()
+{
+
+    if (!mMutationProbability)
+        return;
+
+
+    if (qrand()% int(mMutationProbability*100))
+    {
+        int index = qrand()%(mVector.size());
+        mVector[index] += (qrand()%2) == 0 ? mMutationRange : -mMutationRange;
+    }
+
+
 }
 
 const QVector<double> &Genotype::vector() const

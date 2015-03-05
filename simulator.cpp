@@ -49,12 +49,14 @@ void Simulator::init(int count, int mean, int sd, int geneCount)
     for (int i=0; i<count; ++i) {
 
         //Create random genotype
-        Genotype genotype(geneCount);
+        Genotype genotype;
+
 
         for (int j=0; j<geneCount * geneCount; ++j){
             double number = qRound(distribution(generator)*10);
             genotype.append(number);
         }
+
         append(new Entity(genotype));
     }
 
@@ -71,11 +73,17 @@ void Simulator::run(int iteration)
 
         while ( nextGeneration.count() < maxCount())
         {
-            Entity * child = Entity::childFromParent(randomParent());
+            Entity * maman = randomParent().at(0);
+            Entity * papa = randomParent().at(1);
+
+            Genotype gChild = maman->genotype() + papa->genotype();
+
+            Entity * child = new Entity(gChild);
+
             if (child->isViable())
                 nextGeneration.append(child);
-
-            killCount++;
+            else
+                killCount++;
 
         }
 

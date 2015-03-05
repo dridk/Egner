@@ -1,8 +1,7 @@
 #include "phenotype.h"
 
-Phenotype::Phenotype(int geneCount)
+Phenotype::Phenotype()
 {
-    setGeneCount(geneCount);
 }
 
 Phenotype::~Phenotype()

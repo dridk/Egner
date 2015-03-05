@@ -12,6 +12,9 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
+
+
+
     Simulator sim;
 
     sim.init(300);
@@ -19,6 +22,7 @@ int main(int argc, char *argv[])
     sim.run(100);
 
 
+    qDebug()<<sim[0]->genotype().geneCount();
 
 
 
