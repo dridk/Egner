@@ -7,21 +7,25 @@ class Genotype
 public:
     Genotype(int geneCount=3);
     ~Genotype();
-    int at(int x, int y);
-    void set(int x, int y, int value);
-    QString toString() const;
+    double at(int x, int y);
+    void set(int x, int y, double value);
+    void append(double value);
     int geneCount() const;
     void setGeneCount(int count=3);
 
-    const QVector<int> &toVector() const;
-    void fromVector(QVector<int> vector);
+    const QVector<double> &toVector() const;
+    void fromVector(QVector<double> vector);
+
+    QString toRaw() const;
+    void fromRaw(const QString& raw);
+    void clear();
+
 
     Genotype operator+(const Genotype& other);
 
 
 private:
-    QVector<int> mVector;
-    int mGeneCount;
+    QVector<double> mVector;
 
 };
 

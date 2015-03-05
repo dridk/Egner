@@ -7,15 +7,23 @@ class Entity
 {
 public:
     Entity(int geneCount=3);
+    Entity(const Genotype& g);
     ~Entity();
 
     Genotype &genotype();
     Phenotype &phenotype();
-    void killLater();
-    bool needKill();
-    bool run();
+
+
+
+    bool isViable();
+    int geneCount();
+
+
+    static Entity *childFromParent(const QList<Entity*> parents);
+
 
     const QString &name();
+    QString toString() const;
 
 
 
@@ -24,7 +32,6 @@ private:
     Genotype mGenotype;
     Phenotype mPhenotype;
     QString mName;
-    bool mKill;
     QSet<QString> mHistory;
 };
 

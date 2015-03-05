@@ -5,41 +5,34 @@
 Genotype::Genotype(int geneCount)
 {
     setGeneCount(geneCount);
-
 }
 
 Genotype::~Genotype()
 {
-    mVector.clear();
+    clear();
 }
 
-int Genotype::at(int x, int y)
+double Genotype::at(int x, int y)
 {
-    int index = mGeneCount * y + x;
+    int index = geneCount() * y + x;
     Q_ASSERT_X(index >= 0 && index < mVector.length(), "Genotype at", "coord out of range");
     return mVector.at(index);
 
 }
 
-void Genotype::set(int x, int y, int value)
+void Genotype::set(int x, int y, double value)
 {
-    int index = mGeneCount * y + x;
+    int index = geneCount() * y + x;
     Q_ASSERT_X(index >= 0 && index < mVector.length(), "Genotype at", "coord out of range");
 
     mVector[index] = value;
 }
 
-QString Genotype::toString() const
+void Genotype::append(double value)
 {
-    QString out;
-    for (int i=0; i<mVector.size(); ++i) {
-        out.append(QString::number(mVector[i]));
-        out.append(",");
-        if (i%mGeneCount == mGeneCount-1)
-            out.append("\n");
-    }
-    return out;
+    mVector.append(value);
 }
+
 
 int Genotype::geneCount() const
 {
@@ -51,14 +44,37 @@ void Genotype::setGeneCount(int count)
     mVector.fill(0, count*count);
 }
 
-const QVector<int> &Genotype::toVector() const
+const QVector<double> &Genotype::toVector() const
 {
     return mVector;
 }
 
-void Genotype::fromVector(QVector<int> vector)
+void Genotype::fromVector(QVector<double> vector)
 {
     mVector = vector;
+}
+
+QString Genotype::toRaw() const
+{
+    QStringList raw;
+    foreach (double v , toVector())
+        raw.append(QString::number(v));
+    return raw.join(",");
+}
+
+void Genotype::fromRaw(const QString &raw)
+{
+    clear();
+    QStringList list = raw.split(",");
+    foreach (QString v, list)
+        append(v.toDouble());
+
+
+}
+
+void Genotype::clear()
+{
+    mVector.clear();
 }
 
 Genotype Genotype::operator+(const Genotype &other)
@@ -66,14 +82,14 @@ Genotype Genotype::operator+(const Genotype &other)
 
     Q_ASSERT_X(other.geneCount() == geneCount(), "Genotype","Genotype are not compatible. Not same matrix");
 
-    QVector<int> vector;
+    QVector<double> vector;
 
     for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
 
         if(qrand()%2)
-           vector<<other.toVector().mid(i,geneCount());
+            vector<<other.toVector().mid(i,geneCount());
         else
-           vector<<toVector().mid(i,geneCount());
+            vector<<toVector().mid(i,geneCount());
 
     }
 

@@ -13,14 +13,9 @@ int main(int argc, char *argv[])
 
 
 
-Genotype g;
-Phenotype p ;
+      Phenotype p;
 
-p.set(0,34);
 
-qDebug()<<p.toNormalVector();
-
-//    qDebug()<<e->phenotype().geneCount();
 
 
 
@@ -47,7 +42,7 @@ qDebug()<<p.toNormalVector();
 
 
     //    MainWindow w;
-//    w.show();
+    //    w.show();
 
     return a.exec();
 }

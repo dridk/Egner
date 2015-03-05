@@ -7,18 +7,22 @@ class Phenotype
 public:
     Phenotype(int geneCount = 3);
     ~Phenotype();
+
     int at(int i);
     void set(int i, int value);
+    void append(int value);
     int geneCount() const;
     void setGeneCount(int count=3);
-    QString toString() const;
     const QVector<int>& toVector() const;
     void fromVector(QVector<int> vector);
+    void fromRaw(const QString& raw);
+    QString toRaw() const;
     Phenotype operator*(const Genotype& other);
-    QString hash() const;
+    void clear();
 
-    QVector<int> toNormalVector() const;
 
+protected:
+    int normalize(int value);
 
 
 

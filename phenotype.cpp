@@ -7,7 +7,7 @@ Phenotype::Phenotype(int geneCount)
 
 Phenotype::~Phenotype()
 {
-    mVector.clear();
+    clear();
 }
 
 int Phenotype::at(int i)
@@ -17,27 +17,23 @@ int Phenotype::at(int i)
 
 void Phenotype::set(int i, int value)
 {
-    mVector[i] = value;
+    mVector[i] = normalize(value);
+}
+
+void Phenotype::append(int value)
+{
+    mVector.append(normalize(value));
 }
 
 int Phenotype::geneCount() const
 {
-    return mVector.size();
+    return toVector().size();
 }
 
 void Phenotype::setGeneCount(int count)
 {
-    mVector.fill(0,count);
-}
-
-QString Phenotype::toString()const
-{
-    QString out;
-    foreach (int value, mVector){
-        out.append(QString::number(value));
-        out.append(",");
-    }
-    return out;
+    clear();
+    mVector.fill(1,count);
 }
 
 const QVector<int>& Phenotype::toVector() const
@@ -47,7 +43,30 @@ const QVector<int>& Phenotype::toVector() const
 
 void Phenotype::fromVector(QVector<int> vector)
 {
-    mVector = vector;
+    clear();
+    foreach( int v, vector) {
+        append(v);
+    }
+
+}
+
+void Phenotype::fromRaw(const QString &raw)
+{
+    clear();
+    foreach (QString v, raw.split(","))
+    {
+        append(v.toInt());
+    }
+
+}
+
+QString Phenotype::toRaw() const
+{
+    QStringList raw;
+    foreach (int v, toVector()){
+        raw.append(QString::number(v));
+    }
+    return raw.join(",");
 }
 
 Phenotype Phenotype::operator*(const Genotype &other)
@@ -72,27 +91,17 @@ Phenotype Phenotype::operator*(const Genotype &other)
 
 }
 
-QString Phenotype::hash() const
+void Phenotype::clear()
 {
-    QString hash;
-    foreach (int v, toVector()){
-        hash.append(QString::number(v));
-
-    }
-
-    return hash;
-
+    mVector.clear();
 }
 
-QVector<int> Phenotype::toNormalVector() const
+int Phenotype::normalize(int value)
 {
-    QVector<int> nv;
-    foreach (int v, toVector()){
-        nv.append(v >= 0 ? 1 : -1);
-    }
-
-    return nv;
+    return value > 0 ? 1 : -1;
 }
+
+
 
 
 
