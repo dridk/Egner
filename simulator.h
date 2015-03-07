@@ -1,36 +1,44 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
-#include "entity.h"
+
 #include <QList>
 #include <random>
 #include <QObject>
+#include "genotypeNetwork.h"
 
 class Simulator : public QObject
 {
     Q_OBJECT
 public:
-    Simulator(QObject * parent = 0, int maxCount = 300);
+    Simulator(QObject * parent = 0);
     ~Simulator();
 
-    void append(Entity * e);
-    void removeOne(Entity* e);
-    Entity *at(int index) const;
-    Entity *operator[](int i);
+    void append(const GenotypeNetwork& e);
+    void removeAt(int index);
+    const GenotypeNetwork& at(int index) const;
+    GenotypeNetwork& operator[](int i);
     int count() const;
     int maxCount() const;
-    void init(int count, int mean=0, int sd=1, int geneCount=3);
-    void run(int iteration = 1);
+    void setMaxCount(int c);
+    void init(int count, double mean=0, double sd=1, int geneCount=3);
     QString toString() const;
-    QList<Entity*> randomParent(int count = 2);
+    QList<GenotypeNetwork> randomParent(int count = 2);
+
+    void load(const QString& filename);
+    void save(const QString& filename);
+
+public slots:
+    void run(int iteration = 1);
+
 
 signals:
     void started();
-    void running();
+    void running(int killed);
     void finished();
 
 
 private:
-    QList<Entity*> mEntities;
+    QList<GenotypeNetwork> mLists;
     int mMaxCount;
 };
 

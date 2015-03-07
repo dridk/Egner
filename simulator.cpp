@@ -1,34 +1,36 @@
 #include "simulator.h"
 #include <QDebug>
-Simulator::Simulator(QObject * parent, int maxCount)
+#include <QFile>
+
+Simulator::Simulator(QObject * parent)
     :QObject(parent)
 {
-    mMaxCount = maxCount;
+    mMaxCount = 0;
 }
 
 Simulator::~Simulator()
 {
-
+    mLists.clear();
 }
 
-void Simulator::append(Entity *e)
+void Simulator::append(const GenotypeNetwork& e)
 {
-    mEntities.append(e);
+    mLists.append(e);
 }
 
-void Simulator::removeOne(Entity *e)
+void Simulator::removeAt(int index)
 {
-    mEntities.removeOne(e);
+    mLists.removeAt(index);
 }
 
-Entity *Simulator::at(int index) const
+const GenotypeNetwork& Simulator::at(int index) const
 {
-    return mEntities.at(index);
+    return mLists.at(index);
 }
 
-Entity *Simulator::operator[](int i)
+GenotypeNetwork& Simulator::operator[](int i)
 {
-    return mEntities[i];
+    return mLists[i];
 }
 
 int Simulator::maxCount() const
@@ -36,71 +38,100 @@ int Simulator::maxCount() const
     return mMaxCount;
 }
 
-int Simulator::count() const
+void Simulator::setMaxCount(int c)
 {
-    return mEntities.count();
+    mMaxCount = c;
 }
 
-void Simulator::init(int count, int mean, int sd, int geneCount)
+int Simulator::count() const
 {
-    mMaxCount = count;
+    return mLists.count();
+}
+
+void Simulator::init(int count, double mean, double sd, int geneCount)
+{
+    setMaxCount(count);
+    mLists.clear();
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(mean,sd);
 
     // Create 'count' entity....
-    for (int i=0; i<count; ++i) {
+    for (int i=0; i<maxCount(); ++i) {
 
         //Create random genotype
-        Genotype genotype;
+        GenotypeNetwork genotype;
 
+        Phenotype lastPhenotype;
+        lastPhenotype.fill(1, geneCount);
 
-        for (int j=0; j<geneCount * geneCount; ++j){
-            double number = qRound(distribution(generator)*10);
-            genotype.append(number);
+        while ((genotype.testViability() == false) || (genotype.lastPhenotype() != lastPhenotype)){
+            genotype.clear();
+            for (int j=0; j<geneCount * geneCount; ++j){
+                double number = qRound(distribution(generator)*10);
+                genotype.append(number);
+            }
         }
 
-        append(new Entity(genotype));
+        qDebug()<<genotype.lastPhenotype().raw();
+        append(genotype);
     }
 
 }
 
 void Simulator::run(int iteration)
 {
+
     emit started();
+
+
+
+    for (int i=0; i<mLists.count()/2; ++i)
+    {
+        mLists[i].disable(1);
+    }
+
+
+
+
+
+    int totalKilled =0;
+
 
     for (int step=0; step<iteration ; ++step)
     {
         qDebug()<<QString("==== Step %1").arg(step);
 
-        QList<Entity*> nextGeneration;
-        int killCount = 0;
+        QList<GenotypeNetwork> nextGeneration;
+        int killed = 0;
 
-        emit running();
 
         while ( nextGeneration.count() < maxCount())
         {
-            Entity * maman = randomParent().at(0);
-            Entity * papa = randomParent().at(1);
+            GenotypeNetwork maman = randomParent().first();
+            GenotypeNetwork papa = randomParent().last();
 
-            Genotype gChild = maman->genotype() + papa->genotype();
+            GenotypeNetwork child = maman + papa;
 
-            Entity * child = new Entity(gChild);
-
-            if (child->isViable())
+            if (child.testViability())
                 nextGeneration.append(child);
             else
-                killCount++;
+                killed++;
 
         }
 
-        mEntities.clear();
-        mEntities = nextGeneration;
+        emit running(killed);
+        totalKilled += killed;
 
-        emit finished();
+        mLists.clear();
+        mLists = nextGeneration;
 
-        qDebug()<<QString("total kill count:    %1").arg(killCount);
+
+        qDebug()<<QString("total: %2 total kill count:    %1").arg(killed).arg(mLists.size());
     }
 
+    emit finished();
+
+    qDebug()<<totalKilled;
 
 
 }
@@ -114,21 +145,53 @@ QString Simulator::toString() const
 
 }
 
-QList<Entity*> Simulator::randomParent(int count)
+QList<GenotypeNetwork> Simulator::randomParent(int count)
 {
     QVector<int> indexes;
-    for (int i=0; i<mEntities.size(); ++i)
+    for (int i=0; i<mLists.size(); ++i)
         indexes.append(i);
 
-    QList<Entity*> parents;
+    QList<GenotypeNetwork> parents;
     for (int j=0; j<count; ++j)
     {
         int id = qrand()%indexes.count();
-        parents.append(mEntities.at(indexes.at(id)));
-        indexes.removeAt(id);
+        parents.append(mLists.at(indexes.takeAt(id)));
     }
 
     return parents;
 
 }
 
+void Simulator::load(const QString &filename)
+{
+    QFile file(filename);
+    file.open(QIODevice::ReadOnly);
+    mLists.clear();
+    QTextStream in(&file);
+
+       while (!in.atEnd())
+       {
+           append(GenotypeNetwork(in.readLine()));
+
+       }
+    file.close();
+}
+
+void Simulator::save(const QString &filename)
+{
+
+    QFile file(filename);
+    file.open(QIODevice::WriteOnly);
+
+     QTextStream out(&file);
+
+      foreach (GenotypeNetwork g, mLists)
+      {
+          out<<g.raw()<<"\n";
+      }
+
+
+
+    file.close();
+
+}

@@ -2,6 +2,7 @@
 
 Phenotype::Phenotype()
 {
+
 }
 
 Phenotype::Phenotype(const QVector<int> &vector)
@@ -23,7 +24,7 @@ Phenotype::~Phenotype()
     clear();
 }
 
-int Phenotype::at(int i)
+int Phenotype::at(int i) const
 {
     return mVector.at(i);
 }
@@ -45,8 +46,13 @@ int Phenotype::geneCount() const
 
 void Phenotype::setGeneCount(int count)
 {
+    fill(1,count);
+}
+
+void Phenotype::fill(int value, int count)
+{
     clear();
-    mVector.fill(1,count);
+    mVector.fill(value,count);
 }
 
 const QVector<int>& Phenotype::vector() const
@@ -63,7 +69,36 @@ QString Phenotype::raw() const
     return raw.join(",");
 }
 
-Phenotype Phenotype::operator*(const Genotype &other)
+Phenotype Phenotype::operator*(const GenotypeNetwork &other)
+{
+
+    return cross(other);
+
+}
+
+bool Phenotype::operator ==(const Phenotype &other) const
+{
+
+    if (geneCount() != other.geneCount())
+        return false;
+
+    for (int i=0; i<geneCount(); ++i)
+    {
+        if (at(i) != other.at(i))
+            return false;
+    }
+
+    return true;
+
+
+}
+
+bool Phenotype::operator !=(const Phenotype &other) const
+{
+    return !((*this) == other);
+}
+
+Phenotype Phenotype::cross(const GenotypeNetwork &other)
 {
     Q_ASSERT_X(other.geneCount()==geneCount(), "Phenotype","Phenotype and genotype have not the same genecount");
 
@@ -79,7 +114,6 @@ Phenotype Phenotype::operator*(const Genotype &other)
     }
 
     return Phenotype(newVector);
-
 }
 
 void Phenotype::clear()

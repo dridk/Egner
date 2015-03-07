@@ -1,9 +1,8 @@
-#include "mainwindow.h"
+#include "simmainwindow.h"
 #include <QApplication>
 #include <QDebug>
-#include "genotype.h"
+#include "genotypeNetwork.h"
 #include "phenotype.h"
-#include "entity.h"
 #include "simulator.h"
 #include <QDateTime>
 
@@ -14,7 +13,25 @@ int main(int argc, char *argv[])
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-    Genotype g("1,2,3,4,5,6,7,8,9");
+//    SimMainWindow mainwindow;
+
+//    mainwindow.show();
+
+
+    Simulator sim;
+
+//    sim.init(400);
+
+    sim.load("/tmp/sim_init.txt");
+
+
+
+    sim.run(200);
+
+//    sim.save("/tmp/sim_final.txt");
+
+
+
 
 
 

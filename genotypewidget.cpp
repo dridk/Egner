@@ -1,6 +1,6 @@
 #include "genotypewidget.h"
 
-GenotypeWidget::GenotypeWidget(const Genotype& genotype,QWidget * parent)
+GenotypeWidget::GenotypeWidget(const GenotypeNetwork& genotype,QWidget * parent)
     :QWidget(parent)
 {
 

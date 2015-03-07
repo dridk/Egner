@@ -3,15 +3,15 @@
 
 #include <QWidget>
 #include <QTableView>
-#include "genotype.h"
+#include "genotypeNetwork.h"
 class GenotypeWidget : public QWidget
 {
 public:
-    GenotypeWidget(const Genotype& genotype,QWidget * parent=0);
+    GenotypeWidget(const GenotypeNetwork& genotype,QWidget * parent=0);
     ~GenotypeWidget();
 
 private:
-    Genotype mGenotype;
+    GenotypeNetwork mGenotype;
 };
 
 #endif // GENOTYPEWIDGET_H
