@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtWidgets>
 #include <QListWidget>
-#include "simulator.h"
+#include "population.h"
 #include "abstracttoolwidget.h"
 class SimMainWindow : public QMainWindow
 {
@@ -24,7 +24,7 @@ public slots:
     void finnished();
 
 private:
-    Simulator * mSimulator;
+    Population * mSimulator;
     int mCurrentStep;
 
     QList<AbstractToolWidget*> mToolsWidget;

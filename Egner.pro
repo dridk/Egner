@@ -16,7 +16,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     phenotype.cpp \
-    simulator.cpp \
     abstractwatcher.cpp \
     genotypewidget.cpp \
     genotypeNetwork.cpp \
@@ -25,11 +24,14 @@ SOURCES += main.cpp\
     inittoolwidget.cpp \
     listtoolwidget.cpp \
     plottoolwidget.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    testunit.cpp \
+    population.cpp \
+    genotypepixmap.cpp \
+    populationlistwidget.cpp
 
 HEADERS  += \
     phenotype.h \
-    simulator.h \
     abstractwatcher.h \
     genotypewidget.h \
     genotypeNetwork.h \
@@ -38,7 +40,11 @@ HEADERS  += \
     inittoolwidget.h \
     listtoolwidget.h \
     plottoolwidget.h \
-    qcustomplot.h
+    qcustomplot.h \
+    testunit.h \
+    population.h \
+    genotypepixmap.h \
+    populationlistwidget.h
 
 FORMS    +=
 

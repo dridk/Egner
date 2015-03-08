@@ -10,7 +10,7 @@ AbstractToolWidget::~AbstractToolWidget()
 
 }
 
-void AbstractToolWidget::setSimulator(Simulator *sim)
+void AbstractToolWidget::setSimulator(Population *sim)
 {
     mSim = sim;
 
@@ -20,7 +20,7 @@ void AbstractToolWidget::setSimulator(Simulator *sim)
 
 }
 
-Simulator *AbstractToolWidget::simulator()
+Population *AbstractToolWidget::simulator()
 {
     return mSim;
 }

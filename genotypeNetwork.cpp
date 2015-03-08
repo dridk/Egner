@@ -49,7 +49,7 @@ GenotypeNetwork::~GenotypeNetwork()
     clear();
 }
 
-double GenotypeNetwork::at(int x, int y)
+double GenotypeNetwork::at(int x, int y) const
 {
     int index = geneCount() * y + x;
     Q_ASSERT_X(index >= 0 && index < mVector.length(), "Genotype at", "coord out of range");
@@ -118,6 +118,35 @@ void GenotypeNetwork::disable(int gene)
     }
 }
 
+double GenotypeNetwork::min() const
+{
+    if (mVector.isEmpty())
+        return 0;
+
+    double min = mVector.first();
+
+    foreach (double v, mVector)
+        min = qMin(min,v);
+
+    return min;
+
+}
+
+double GenotypeNetwork::max() const
+{
+
+    if (mVector.isEmpty())
+        return 0;
+
+     double max = mVector.first();
+
+     foreach (double v, mVector)
+         max = qMax(max,v);
+
+     return max;
+
+}
+
 
 const QVector<double> &GenotypeNetwork::vector() const
 {
@@ -141,7 +170,7 @@ void GenotypeNetwork::clear()
     mVector.clear();
 }
 
-bool GenotypeNetwork::testViability(const Phenotype &phenotype)
+bool GenotypeNetwork::testViability(const Phenotype &phenotype) const
 {
     if (mVector.isEmpty())
         return false;
@@ -167,7 +196,7 @@ bool GenotypeNetwork::testViability(const Phenotype &phenotype)
 
 }
 
-bool GenotypeNetwork::testViability()
+bool GenotypeNetwork::testViability() const
 {
     Phenotype p;
     for (int i=0; i<geneCount(); ++i){

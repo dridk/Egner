@@ -19,7 +19,7 @@ public:
     GenotypeNetwork(const QString& raw);
     GenotypeNetwork(const QList<GenotypeNetwork>& parents);
     ~GenotypeNetwork();
-    double at(int x, int y);
+    double at(int x, int y) const;
     void set(int x, int y, double value);
     void append(double value);
     int geneCount() const;
@@ -28,13 +28,15 @@ public:
     void setMutationRange(double r);
     void mutate();
     void disable(int gene);
+    double min() const;
+    double max() const;
 
     const QVector<double> &vector() const;
     QString raw() const;
     void clear();
 
-    bool testViability(const Phenotype& phenotype);
-    bool testViability();
+    bool testViability(const Phenotype& phenotype) const;
+    bool testViability() const;
     Phenotype lastPhenotype();
     Phenotype lastPhenotype(const Phenotype& phenotype);
 

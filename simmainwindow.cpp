@@ -7,7 +7,7 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
 
-    mSimulator = new Simulator;
+    mSimulator = new Population;
 
     mToolBox = new QToolBox;
     mToolBar = new QToolBar;

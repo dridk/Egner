@@ -3,32 +3,40 @@
 #include <QDebug>
 #include "genotypeNetwork.h"
 #include "phenotype.h"
-#include "simulator.h"
+#include "population.h"
 #include <QDateTime>
-
 #include "genotypewidget.h"
+#include "testunit.h"
+#include "populationlistwidget.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
-//    SimMainWindow mainwindow;
 
-//    mainwindow.show();
+//    TestUnit * test = new TestUnit();
+//    QTest::qExec(test);
+//    return 0;
 
 
-    Simulator sim;
-
-//    sim.init(400);
-
-    sim.load("/tmp/sim_init.txt");
+    GenotypeNetwork g1("0,0,2,4,1,7,5,0,4");
 
 
 
-    sim.run(200);
 
-//    sim.save("/tmp/sim_final.txt");
+    Population pop;
+    pop.init(400,0,1,5);
+
+    pop.disableAll(2);
+
+  pop.run(200);
+
+    PopulationListWidget * w = new PopulationListWidget(&pop);
+
+
+    w->populate();
+    w->show();
 
 
 
