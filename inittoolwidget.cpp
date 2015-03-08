@@ -8,7 +8,7 @@ InitToolWidget::InitToolWidget(QWidget * parent)
     mSdSpinBox= new QDoubleSpinBox;
     mCountSpinBox= new QSpinBox;
     mGeneCountSpinBox= new QSpinBox;
-
+    mOkButton = new QPushButton("Generate");
 
     mMeanSpinBox->setValue(0);
     mSdSpinBox->setValue(1);
@@ -22,12 +22,14 @@ InitToolWidget::InitToolWidget(QWidget * parent)
     cLayout->addRow("mean", mMeanSpinBox);
     cLayout->addRow("sd", mSdSpinBox);
     cLayout->addRow("gene count", mGeneCountSpinBox);
-
+    cLayout->addWidget(mOkButton);
 
     setLayout(cLayout);
 
 
     setWindowTitle("Initialisation");
+
+    connect(mOkButton,SIGNAL(clicked()),this,SLOT(populate()));
 
 
 }
@@ -37,10 +39,8 @@ InitToolWidget::~InitToolWidget()
 
 }
 
-void InitToolWidget::started()
+void InitToolWidget::populate()
 {
-
-    qDebug()<<"INITIALISATION ";
 
     if (mCountSpinBox->value() == 0)
         return;
@@ -50,10 +50,12 @@ void InitToolWidget::started()
     double sd = mSdSpinBox->value();
     int geneCount = mGeneCountSpinBox->value();
 
-    simulator()->init(count, mean, sd, geneCount);
+    population()->init(count, mean, sd, geneCount);
 
-    qDebug()<<"INITILISATION FINIS"<<simulator()->count();
+    emit needRefresh();
+
 
 
 }
+
 

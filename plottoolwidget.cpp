@@ -6,6 +6,11 @@ PlotToolWidget::PlotToolWidget(QWidget *parent) :
 
     mPlot = new QCustomPlot;
     setWindowTitle("Plot");
+
+    mPlot->show();
+    mPlot->addGraph();
+
+
 }
 
 PlotToolWidget::~PlotToolWidget()

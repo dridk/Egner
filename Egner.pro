@@ -28,7 +28,9 @@ SOURCES += main.cpp\
     testunit.cpp \
     population.cpp \
     genotypepixmap.cpp \
-    populationlistwidget.cpp
+    populationlistwidget.cpp \
+    runtoolwidget.cpp \
+    knockouttoolwidget.cpp
 
 HEADERS  += \
     phenotype.h \
@@ -44,7 +46,9 @@ HEADERS  += \
     testunit.h \
     population.h \
     genotypepixmap.h \
-    populationlistwidget.h
+    populationlistwidget.h \
+    runtoolwidget.h \
+    knockouttoolwidget.h
 
 FORMS    +=
 

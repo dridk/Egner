@@ -1,48 +1,36 @@
 #include "simmainwindow.h"
 #include "inittoolwidget.h"
 #include "plottoolwidget.h"
-
 #include <QInputDialog>
+#include <QToolBar>
+#include <QFileDialog>
+#include "inittoolwidget.h"
+#include "runtoolwidget.h"
+#include "knockouttoolwidget.h"
+
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+    mPopulation = new Population;
+    mListWidget = new PopulationListWidget(mPopulation);
+    QToolBar * mMainToolBar = new QToolBar;
 
-    mSimulator = new Population;
-
-    mToolBox = new QToolBox;
-    mToolBar = new QToolBar;
-    mProgressBar = new QProgressBar;
-
-
-    QVBoxLayout * cLayout = new QVBoxLayout;
-    cLayout->addWidget(mToolBox);
-    //    cLayout->addWidget(mProgressBar);
-    cLayout->setContentsMargins(0,0,0,0);
-
-    QWidget * cw = new QWidget;
-    cw->setLayout(cLayout);
-
-    addToolBar(mToolBar);
-
-    QAction * runAction = mToolBar->addAction("Run");
-    QAction * obsAction = mToolBar->addAction("Observer");
-    mToolBar->addWidget(mProgressBar);
-
-    mToolMenu = new QMenu();
-    obsAction->setMenu(mToolMenu);
+    QAction * openAction = mMainToolBar->addAction("Open");
+    QAction * saveAction = mMainToolBar->addAction("Save");
+    QAction * clearAction = mMainToolBar->addAction("Clear");
 
 
-    addTool(new InitToolWidget());
-    addTool(new PlotToolWidget());
+    addToolBar(mMainToolBar);
+    setCentralWidget(mListWidget);
 
 
+    connect(openAction,SIGNAL(triggered()),this,SLOT(open()));
+    connect(saveAction,SIGNAL(triggered()),this,SLOT(save()));
+    connect(clearAction,SIGNAL(triggered()),this,SLOT(clear()));
 
-    setCentralWidget(cw);
-
-
-    connect(runAction,SIGNAL(triggered()),this,SLOT(run()));
-    connect(mSimulator,SIGNAL(finished()),this,SLOT(finnished()));
-    connect(mSimulator,SIGNAL(running(int)),this,SLOT(running(int)));
+    addTool(new InitToolWidget);
+    addTool(new RunToolWidget);
+    addTool(new KnockoutToolWidget);
 
 
 }
@@ -55,43 +43,55 @@ SimMainWindow::~SimMainWindow()
 void SimMainWindow::addTool(AbstractToolWidget *tool)
 {
 
-    mToolBox->addItem(tool, tool->windowIcon(),tool->windowTitle());
-    mToolMenu->addAction(tool->windowTitle())->setCheckable(true);
-    tool->setSimulator(mSimulator);
+    tool->setPopulation(mPopulation);
+    QDockWidget * dock = new QDockWidget;
+    dock->setWidget(tool);
+    dock->setWindowTitle(tool->windowTitle());
+    addDockWidget(Qt::LeftDockWidgetArea, dock);
+
+    connect(tool,SIGNAL(needRefresh()),this,SLOT(refresh()));
+
+    mTools.append(tool);
 
 }
 
-
-void SimMainWindow::run()
+void SimMainWindow::save()
 {
-    bool ok;
-    int iteration = QInputDialog::getInt(this,"step","step count",mProgressBar->maximum(),1,1000,1,&ok);
-    if (ok){
-        mCurrentStep = 0;
-        mProgressBar->setRange(0, iteration);
-        mSimulator->run(iteration);
+    QString  filename = QFileDialog::getSaveFileName(this,"pop","/tmp/");
+
+    if (!filename.isEmpty())
+        mPopulation->save(filename);
+
+    refresh();
 
 
-    }
 }
 
-void SimMainWindow::started()
+void SimMainWindow::open()
 {
-    mProgressBar->setFormat("Started...");
+    QString  filename = QFileDialog::getOpenFileName(this,"pop","/tmp/");
+
+    if (!filename.isEmpty())
+        mPopulation->load(filename);
+
+    refresh();
+
 }
 
-void SimMainWindow::finnished()
+void SimMainWindow::refresh()
 {
-    mProgressBar->setFormat("Finished");
+    mListWidget->populate();
 
+    foreach (AbstractToolWidget * t, mTools)
+        t->refresh();
 }
 
-void SimMainWindow::running(int killed)
+void SimMainWindow::clear()
 {
-    mCurrentStep++;
-    mProgressBar->setFormat("Step %p%");
-    mProgressBar->setValue(mCurrentStep);
-}
+    mPopulation->clear();
+    refresh();
 
+
+}
 
 

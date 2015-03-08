@@ -6,18 +6,21 @@
 
 class InitToolWidget : public AbstractToolWidget
 {
+    Q_OBJECT
 public:
     InitToolWidget(QWidget * parent = 0);
     ~InitToolWidget();
 
 protected slots:
-    virtual void started();
+    void populate();
+
 
 private:
     QDoubleSpinBox * mMeanSpinBox;
     QDoubleSpinBox * mSdSpinBox;
     QSpinBox * mCountSpinBox;
     QSpinBox * mGeneCountSpinBox;
+    QPushButton * mOkButton;
 
 
 };

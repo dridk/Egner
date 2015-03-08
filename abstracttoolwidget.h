@@ -2,6 +2,7 @@
 #define ABSTRACTTOOLWIDGET_H
 
 #include <QWidget>
+#include <QDockWidget>
 #include "population.h"
 class AbstractToolWidget : public QWidget
 {
@@ -9,15 +10,16 @@ class AbstractToolWidget : public QWidget
 public:
     explicit AbstractToolWidget(QWidget *parent = 0);
     ~AbstractToolWidget();
-    void setSimulator(Population * sim);
-    Population *simulator();
+    void setPopulation(Population * sim);
+    Population *population();
 
 
+signals:
+    void needRefresh();
 
-protected slots:
-    virtual void started() {}
-    virtual void running(int killed) {}
-    virtual void finished() {}
+public slots:
+    virtual void refresh(){}
+
 
 private:
     Population * mSim;

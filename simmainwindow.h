@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QtWidgets>
 #include <QListWidget>
-#include "population.h"
 #include "abstracttoolwidget.h"
+#include "population.h"
+#include "populationlistwidget.h"
+
 class SimMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,23 +18,18 @@ public:
     void addTool(AbstractToolWidget * tool);
 
 public slots:
-    void run();
+    void save();
+    void open();
+    void refresh();
+    void clear();
 
-
-    void started();
-    void running(int killed);
-    void finnished();
 
 private:
-    Population * mSimulator;
-    int mCurrentStep;
+    Population * mPopulation;
+    PopulationListWidget * mListWidget;
 
-    QList<AbstractToolWidget*> mToolsWidget;
-    QToolBox * mToolBox;
-    QToolBar * mToolBar;
-    QProgressBar * mProgressBar;
-    QMenu * mToolMenu;
-    QSpinBox * mSpinBox;
+    QList<AbstractToolWidget*> mTools;
+
 
 };
 
