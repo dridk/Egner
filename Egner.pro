@@ -30,7 +30,10 @@ SOURCES += main.cpp\
     genotypepixmap.cpp \
     populationlistwidget.cpp \
     runtoolwidget.cpp \
-    knockouttoolwidget.cpp
+    knockouttoolwidget.cpp \
+    propertywidgetcontainer.cpp \
+    propertylistwidget.cpp \
+    populationstatwidget.cpp
 
 HEADERS  += \
     phenotype.h \
@@ -48,7 +51,10 @@ HEADERS  += \
     genotypepixmap.h \
     populationlistwidget.h \
     runtoolwidget.h \
-    knockouttoolwidget.h
+    knockouttoolwidget.h \
+    propertylistwidget.h \
+    propertywidgetcontainer.h \
+    populationstatwidget.h
 
 FORMS    +=
 

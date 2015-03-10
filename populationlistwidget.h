@@ -14,7 +14,7 @@ public:
 
 
 public slots:
-    void populate();
+    void refresh();
 
 private:
     Population * mPopulation;

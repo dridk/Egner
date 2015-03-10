@@ -18,9 +18,12 @@ public slots:
 private:
     QSpinBox * mIterationBox;
     QSpinBox * mParentCountBox;
+    QDoubleSpinBox * mMutationBox;
+
     QPushButton * mRunButton;
     QProgressBar * mBar;
     QCustomPlot * mPlot;
+    QCheckBox * mCheckBox;
 
     QVector<double> mX;
     QVector<double> mY;

@@ -17,6 +17,7 @@ protected slots:
 
 private:
     QDoubleSpinBox * mMeanSpinBox;
+    QProgressBar * mBar;
     QDoubleSpinBox * mSdSpinBox;
     QSpinBox * mCountSpinBox;
     QSpinBox * mGeneCountSpinBox;

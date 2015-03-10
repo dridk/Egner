@@ -55,6 +55,8 @@ void Population::init(int count, double mean, double sd, int geneCount)
         //Create random genotype
         GenotypeNetwork genotype;
 
+        qDebug()<<i;
+
         Phenotype lastPhenotype;
         lastPhenotype.fill(1, geneCount);
 
@@ -87,6 +89,15 @@ void Population::disableAll(int gene)
     disable(gene, count());
 }
 
+int Population::geneCount() const
+{
+    if (mLists.isEmpty())
+        return 0;
+
+    return mLists.first().geneCount();
+
+}
+
 void Population::run(int iteration)
 {
 
@@ -105,19 +116,20 @@ void Population::run(int iteration)
     emit finished();
 }
 
-int Population::next()
+int Population::next(double proba)
 {
     QList<GenotypeNetwork> nextGeneration;
     int killed = 0;
     while ( nextGeneration.count() < count())
     {
-        GenotypeNetwork maman = randomParent().first();
-        GenotypeNetwork papa = randomParent().last();
 
-//        maman.mutate();
-//        papa.mutate();
+        QList<GenotypeNetwork> parents = randomParent();
+        GenotypeNetwork maman = parents.first();
+        GenotypeNetwork papa  = parents.last();
 
         GenotypeNetwork child = maman + papa;
+
+        child.mutate(proba);
 
         if (child.testViability()){
             nextGeneration.append(child);
@@ -225,5 +237,55 @@ double Population::maxValue() const
 
     return max;
 
+
+}
+
+double Population::min(int x, int y) const
+{
+    if (mLists.count() <=0)
+        return 0;
+
+    double min = mLists.first().at(x,y);
+    foreach (GenotypeNetwork g, mLists)
+        min = qMin(min, g.at(x,y));
+
+    return min;
+
+
+}
+
+double Population::max(int x, int y) const
+{
+    if (mLists.count() <=0)
+        return 0;
+
+
+    double max = mLists.first().at(x,y);
+    foreach (GenotypeNetwork g, mLists)
+        max = qMax(max, g.at(x,y));
+
+    return max;
+
+}
+
+double Population::mean(int x, int y) const
+{
+
+    if (mLists.count() <=0)
+        return 0;
+
+
+    double sum = 0;
+    foreach (GenotypeNetwork g, mLists)
+        sum = g.at(x,y);
+
+    return sum / double(geneCount());
+
+
+
+}
+
+double Population::sd(int x, int y) const
+{
 
 }

@@ -22,6 +22,7 @@ public:
     void init(int count, double mean=0, double sd=1, int geneCount=3);
     void disable(int gene, int count);
     void disableAll(int gene);
+    int geneCount() const;
     QString toString() const;
     QList<GenotypeNetwork> randomParent(int count = 2);
 
@@ -30,10 +31,15 @@ public:
 
     double minValue() const;
     double maxValue() const;
+    double min(int x,int y) const;
+    double max(int x, int y) const;
+    double mean(int x, int y) const;
+    double sd(int x,int y) const;
+
 
 public slots:
     void run(int iteration = 1);
-    int next();
+    int next(double proba=0);
 
 
 signals:
@@ -44,6 +50,7 @@ signals:
 
 private:
     QList<GenotypeNetwork> mLists;
+
 };
 
 #endif // SIMULATOR_H

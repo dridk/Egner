@@ -9,6 +9,7 @@ InitToolWidget::InitToolWidget(QWidget * parent)
     mCountSpinBox= new QSpinBox;
     mGeneCountSpinBox= new QSpinBox;
     mOkButton = new QPushButton("Generate");
+    mBar = new QProgressBar;
 
     mMeanSpinBox->setValue(0);
     mSdSpinBox->setValue(1);
@@ -22,6 +23,7 @@ InitToolWidget::InitToolWidget(QWidget * parent)
     cLayout->addRow("mean", mMeanSpinBox);
     cLayout->addRow("sd", mSdSpinBox);
     cLayout->addRow("gene count", mGeneCountSpinBox);
+    cLayout->addWidget(mBar);
     cLayout->addWidget(mOkButton);
 
     setLayout(cLayout);

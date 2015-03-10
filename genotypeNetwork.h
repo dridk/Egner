@@ -26,7 +26,7 @@ public:
     void setGeneCount(int count=3);
     void setMutationProbability(double p);
     void setMutationRange(double r);
-    void mutate();
+    void mutate(double probability=1, double range=1);
     void disable(int gene);
     double min() const;
     double max() const;

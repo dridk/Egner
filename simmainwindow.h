@@ -7,6 +7,8 @@
 #include "abstracttoolwidget.h"
 #include "population.h"
 #include "populationlistwidget.h"
+#include "populationstatwidget.h"
+#include "propertylistwidget.h"
 
 class SimMainWindow : public QMainWindow
 {
@@ -27,7 +29,11 @@ public slots:
 private:
     Population * mPopulation;
     PopulationListWidget * mListWidget;
+    PopulationStatWidget * mStatWidget;
 
+
+
+    PropertyListWidget * mPropertyWidget;
     QList<AbstractToolWidget*> mTools;
 
 

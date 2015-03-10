@@ -13,7 +13,13 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 {
     mPopulation = new Population;
     mListWidget = new PopulationListWidget(mPopulation);
+    mStatWidget = new PopulationStatWidget(mPopulation);
+
     QToolBar * mMainToolBar = new QToolBar;
+    QTabWidget * mTabWidget = new QTabWidget;
+
+
+    mPropertyWidget = new PropertyListWidget;
 
     QAction * openAction = mMainToolBar->addAction("Open");
     QAction * saveAction = mMainToolBar->addAction("Save");
@@ -21,16 +27,35 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 
 
     addToolBar(mMainToolBar);
-    setCentralWidget(mListWidget);
+
+    mTabWidget->addTab(mListWidget,"Grid");
+    mTabWidget->addTab(mStatWidget,"Stat");
+
+
+    setCentralWidget(mTabWidget);
+
+
+    QDockWidget * mLeftWidget = new QDockWidget;
+    mLeftWidget->setWidget(mPropertyWidget);
+    mLeftWidget->layout()->setContentsMargins(0,0,0,0);
+    mLeftWidget->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    mLeftWidget->setTitleBarWidget(new QWidget());
+    addDockWidget(Qt::LeftDockWidgetArea, mLeftWidget);
+
 
 
     connect(openAction,SIGNAL(triggered()),this,SLOT(open()));
     connect(saveAction,SIGNAL(triggered()),this,SLOT(save()));
     connect(clearAction,SIGNAL(triggered()),this,SLOT(clear()));
 
-    addTool(new InitToolWidget);
-    addTool(new RunToolWidget);
-    addTool(new KnockoutToolWidget);
+
+    addTool(new KnockoutToolWidget());
+    addTool(new InitToolWidget());
+    addTool(new RunToolWidget());
+
+   setStyleSheet("QMainWindow::separator {width:1px}");
+
+
 
 
 }
@@ -44,13 +69,8 @@ void SimMainWindow::addTool(AbstractToolWidget *tool)
 {
 
     tool->setPopulation(mPopulation);
-    QDockWidget * dock = new QDockWidget;
-    dock->setWidget(tool);
-    dock->setWindowTitle(tool->windowTitle());
-    addDockWidget(Qt::LeftDockWidgetArea, dock);
-
+    mPropertyWidget->addWidget(tool);
     connect(tool,SIGNAL(needRefresh()),this,SLOT(refresh()));
-
     mTools.append(tool);
 
 }
@@ -80,7 +100,8 @@ void SimMainWindow::open()
 
 void SimMainWindow::refresh()
 {
-    mListWidget->populate();
+    mListWidget->refresh();
+    mStatWidget->refresh();
 
     foreach (AbstractToolWidget * t, mTools)
         t->refresh();

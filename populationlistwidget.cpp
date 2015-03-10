@@ -16,7 +16,7 @@ PopulationListWidget::~PopulationListWidget()
 
 }
 
-void PopulationListWidget::populate()
+void PopulationListWidget::refresh()
 {
 
     clear();

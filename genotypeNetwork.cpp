@@ -92,17 +92,17 @@ void GenotypeNetwork::setMutationRange(double r)
     mMutationRange = r;
 }
 
-void GenotypeNetwork::mutate()
+void GenotypeNetwork::mutate(double probability, double range)
 {
 
-    if (!mMutationProbability)
+    if (!probability)
         return;
 
 
-    if (qrand()% int(mMutationProbability*100))
+    if (qrand()% int(probability*100))
     {
         int index = qrand()%(mVector.size());
-        mVector[index] += (qrand()%2) == 0 ? mMutationRange : -mMutationRange;
+        mVector[index] += (qrand()%2) == 0 ? range : -range;
     }
 
 
@@ -115,6 +115,11 @@ void GenotypeNetwork::disable(int gene)
     for (int x=0; x<geneCount(); ++x)
     {
         set(x,gene,0);
+    }
+
+    for (int y=0; y<geneCount(); ++y)
+    {
+        set(gene,y,0);
     }
 }
 
