@@ -21,9 +21,11 @@ private:
     QDoubleSpinBox * mMutationBox;
 
     QPushButton * mRunButton;
-    QProgressBar * mBar;
+    QProgressDialog * mProgressDialog;
     QCustomPlot * mPlot;
-    QCheckBox * mCheckBox;
+    QCheckBox * mPlotBox;
+    QCheckBox * mHistBox;
+
 
     QVector<double> mX;
     QVector<double> mY;

@@ -24,6 +24,7 @@ public slots:
     void open();
     void refresh();
     void clear();
+    void setProgress(int value);
 
 
 private:

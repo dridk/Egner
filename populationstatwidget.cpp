@@ -15,6 +15,8 @@ PopulationStatWidget::PopulationStatWidget(Population * pop, QWidget *parent)
     mPlot->plotLayout()->clear();
 
 
+    mPlot->setInteraction(QCP::iRangeZoom,true);
+    mPlot->setInteraction(QCP::iRangeDrag,true);
 
 
 
@@ -37,7 +39,8 @@ void PopulationStatWidget::refresh()
     mPlot->clearPlottables();
 
 
-
+    int min = mPop->minValue();
+    int max = mPop->maxValue();
 
 
     for (int x=0; x< geneCount; ++x)
@@ -49,7 +52,7 @@ void PopulationStatWidget::refresh()
 
 
             QCPAxisRect * axisRect =  new QCPAxisRect(mPlot);
-            mPlot->plotLayout()->addElement(x,y,axisRect);
+            mPlot->plotLayout()->addElement(y,x,axisRect);
 
 
 
@@ -59,31 +62,34 @@ void PopulationStatWidget::refresh()
             QVector<double> datax;
             QVector<double> datay;
 
-            QMap<double, double> mMap;
+            QMap<double,double> mMap;
 
-
+            int s = max - min;
 
             for (int i=0; i<mPop->count(); ++i)
             {
-                double key = mPop->at(i).at(x,y);
+                double val = mPop->at(i).at(x,y);
+                double key = int(val) % s;
 
-                if (!mMap.contains(key))
-                    mMap[key] = 0;
-                else
-                    mMap[key]++;
+               if (!mMap.contains(key))
+                   mMap.insert(key, 1);
+               else
+                   mMap[key]++;
+
 
             }
 
             newGraph->setData(mMap.keys().toVector(), mMap.values().toVector());
+            axisRect->axis(QCPAxis::atBottom)->setRange(-20,20);
+            axisRect->axis(QCPAxis::atLeft)->setRange(-20,20);
             newGraph->rescaleAxes();
-
 
 
         }
     }
 
 
-
+mPlot->replot();
 
 }
 

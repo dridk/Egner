@@ -1,6 +1,7 @@
 #include "abstracttoolwidget.h"
 
-AbstractToolWidget::AbstractToolWidget(QWidget *parent) : QWidget(parent)
+AbstractToolWidget::AbstractToolWidget(QWidget *parent)
+    : QWidget(parent)
 {
 
 }

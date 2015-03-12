@@ -1,5 +1,5 @@
 #include "populationlistwidget.h"
-
+#include "genotypedialog.h"
 PopulationListWidget::PopulationListWidget(Population *pop, QWidget *parent) :
     QListWidget(parent)
 {
@@ -9,6 +9,8 @@ PopulationListWidget::PopulationListWidget(Population *pop, QWidget *parent) :
     setIconSize(QSize(100,100));
 
     resize(400,600);
+
+    connect(this,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(showDialog(QModelIndex)));
 }
 
 PopulationListWidget::~PopulationListWidget()
@@ -46,6 +48,19 @@ void PopulationListWidget::refresh()
 
 
 
+
+
+}
+
+void PopulationListWidget::showDialog(const QModelIndex &index)
+{
+    Q_UNUSED(index);
+    QString raw = currentItem()->data(Qt::ToolTipRole).toString();
+qDebug()<<raw;
+
+    GenotypeDialog * dialog = new GenotypeDialog(GenotypeNetwork(raw));
+
+    dialog->exec();
 
 
 }

@@ -15,6 +15,7 @@ public:
 
 public slots:
     void refresh();
+    void showDialog(const QModelIndex& index);
 
 private:
     Population * mPopulation;

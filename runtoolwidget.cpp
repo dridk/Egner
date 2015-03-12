@@ -6,25 +6,32 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mIterationBox = new QSpinBox;
     mParentCountBox = new QSpinBox;
     mRunButton = new QPushButton("Run");
-    mBar = new QProgressBar;
     mMutationBox= new QDoubleSpinBox;
-    mCheckBox = new QCheckBox;
+    mPlotBox = new QCheckBox;
+    mHistBox = new QCheckBox;
     mPlot  = new QCustomPlot();
     mMutationBox->setRange(0,1);
     mMutationBox->setSingleStep(0.01);
     setWindowTitle("Run");
+
+
+    mProgressDialog = new QProgressDialog(this);
+    mProgressDialog->setModal(true);
+    mProgressDialog->setVisible(false);
 
     mIterationBox->setRange(0,10000);
 
     QFormLayout * l = new QFormLayout;
 
     l->addRow("Iteration", mIterationBox);
-    l->addRow("Plot", mCheckBox);
     l->addRow("Proba muta", mMutationBox);
+
+    l->addRow("show Line plot", mPlotBox);
+    l->addRow("show Histogram pot", mHistBox);
+
 
     QVBoxLayout * all = new QVBoxLayout;
     all->addLayout(l);
-    all->addWidget(mBar);
     all->addWidget(mRunButton);
 
 
@@ -45,7 +52,13 @@ void RunToolWidget::run()
 {
     qDebug()<<"run...";
     int iteration = mIterationBox->value();
-    mBar->setRange(0,iteration);
+
+    mProgressDialog->setVisible(true);
+    mProgressDialog->setLabelText("Computing...");
+    mProgressDialog->setWindowTitle("loading");
+    mProgressDialog->setRange(0,iteration);
+
+
 
 
     mX.clear();
@@ -58,7 +71,7 @@ void RunToolWidget::run()
         int killed = population()->next(proba);
 
         qDebug()<<killed;
-        mBar->setValue(i);
+        mProgressDialog->setValue(i);
 
 
         mX.append(i);
@@ -67,9 +80,9 @@ void RunToolWidget::run()
 
     }
 
-    mBar->setValue(iteration);
+    mProgressDialog->setValue(iteration);
 
-    if (mCheckBox->isChecked())
+    if (mPlotBox->isChecked())
         showPlot();
 
     emit needRefresh();

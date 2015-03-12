@@ -28,11 +28,15 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
 
     addToolBar(mMainToolBar);
 
+
+
     mTabWidget->addTab(mListWidget,"Grid");
     mTabWidget->addTab(mStatWidget,"Stat");
 
 
     setCentralWidget(mTabWidget);
+    setStatusBar(new QStatusBar());
+
 
 
     QDockWidget * mLeftWidget = new QDockWidget;
@@ -54,7 +58,6 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     addTool(new RunToolWidget());
 
    setStyleSheet("QMainWindow::separator {width:1px}");
-
 
 
 
@@ -113,6 +116,10 @@ void SimMainWindow::clear()
     refresh();
 
 
+}
+
+void SimMainWindow::setProgress(int value)
+{
 }
 
 
