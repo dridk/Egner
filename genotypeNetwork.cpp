@@ -143,12 +143,12 @@ double GenotypeNetwork::max() const
     if (mVector.isEmpty())
         return 0;
 
-     double max = mVector.first();
+    double max = mVector.first();
 
-     foreach (double v, mVector)
-         max = qMax(max,v);
+    foreach (double v, mVector)
+        max = qMax(max,v);
 
-     return max;
+    return max;
 
 }
 
@@ -238,7 +238,7 @@ Phenotype GenotypeNetwork::lastPhenotype(const Phenotype &phenotype)
         currentPhenotype = currentPhenotype * (*this);
         current = currentPhenotype.raw();
     }
-        return currentPhenotype;
+    return currentPhenotype;
 
 
 
@@ -256,16 +256,36 @@ GenotypeNetwork GenotypeNetwork::add(const GenotypeNetwork &other)
     Q_ASSERT_X(other.geneCount() == geneCount(), "Genotype","Genotype are not compatible. Not same matrix");
     QVector<double> v;
 
-    for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
+    GenotypeNetwork newGenotype = other;
 
-        if(qrand()%2)
-            v<<other.vector().mid(i,geneCount());
-        else
-            v<<vector().mid(i,geneCount());
 
+    int gene = qrand()% geneCount();
+
+    for (int x=0; x<geneCount(); ++x)
+    {
+        newGenotype.set(x,gene, at(x,gene));
     }
 
-    return GenotypeNetwork(v);
+    for (int y=0; y<geneCount(); ++y)
+    {
+        newGenotype.set(gene,y, at(gene,y));
+    }
+
+    return newGenotype;
+
+    // OLD ALGOR
+
+
+    //    for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
+
+    //        if(qrand()%2)
+    //            v<<other.vector().mid(i,geneCount());
+    //        else
+    //            v<<vector().mid(i,geneCount());
+
+    //    }
+
+    //    return GenotypeNetwork(v);
 }
 
 bool GenotypeNetwork::isSquare(int value)

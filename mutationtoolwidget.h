@@ -2,14 +2,16 @@
 #define MUTATIONTOOLWIDGET_H
 
 #include <QtWidgets>
-
-class MutationToolWidget : public QWidget
+#include "abstracttoolwidget.h"
+class MutationToolWidget : public AbstractToolWidget
 {
     Q_OBJECT
 public:
     explicit MutationToolWidget(QWidget *parent = 0);
     ~MutationToolWidget();
 
+public slots:
+    void makeMutation();
 
 private:
     QDoubleSpinBox * mProbaBox;

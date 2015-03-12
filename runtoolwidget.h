@@ -14,6 +14,10 @@ public slots:
     void run();
     void showPlot();
     void showHist();
+    void clearGraph();
+
+    void getColor();
+    void setColor(const QColor &col);
 
 
 private:
@@ -22,11 +26,14 @@ private:
     QDoubleSpinBox * mMutationBox;
 
     QPushButton * mRunButton;
+    QPushButton * mClearGraph;
+    QToolButton * mColorButton;
     QProgressDialog * mProgressDialog;
     QCustomPlot * mPlot;
     QCustomPlot * mHistPlot;
     QCheckBox * mPlotBox;
     QCheckBox * mHistBox;
+    QColor mCurrentColor;
 
 
     QVector<double> mX;

@@ -1,5 +1,6 @@
 #include "runtoolwidget.h"
 #include <QProgressDialog>
+#include <QColorDialog>
 RunToolWidget::RunToolWidget(QWidget * parent)
     :AbstractToolWidget(parent)
 {
@@ -9,7 +10,9 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mMutationBox= new QDoubleSpinBox;
     mPlotBox = new QCheckBox;
     mHistBox = new QCheckBox;
+    mColorButton = new QToolButton;
     mPlot  = new QCustomPlot();
+    mClearGraph =  new QPushButton("Clear graph");
     mHistPlot = new QCustomPlot();
     mMutationBox->setRange(0,1);
     mMutationBox->setSingleStep(0.01);
@@ -29,10 +32,12 @@ RunToolWidget::RunToolWidget(QWidget * parent)
 
     l->addRow("show Line plot", mPlotBox);
     l->addRow("show Histogram pot", mHistBox);
+    l->addRow("Set Color", mColorButton);
 
 
     QVBoxLayout * all = new QVBoxLayout;
     all->addLayout(l);
+    all->addWidget(mClearGraph);
     all->addWidget(mRunButton);
 
 
@@ -40,6 +45,10 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     setLayout(all);
 
     connect(mRunButton,SIGNAL(clicked()),this,SLOT(run()));
+    connect(mClearGraph,SIGNAL(clicked()),this,SLOT(clearGraph()));
+    connect(mColorButton,SIGNAL(clicked()),this,SLOT(getColor()));
+
+    setColor(Qt::blue);
 
 
 }
@@ -98,17 +107,19 @@ void RunToolWidget::run()
 void RunToolWidget::showPlot()
 {
 
-    mPlot->clearPlottables();
-    mPlot->clearGraphs();
-
     mPlot->addGraph();
-    QPen pen;
-    pen.setColor(QColor(0, 0, 255, 200));
     mPlot->graph()->setLineStyle(QCPGraph::LineStyle::lsLine);
     mPlot->graph()->setScatterStyle(QCPScatterStyle::ssCircle);
 
-    mPlot->graph()->setPen(pen);
-    mPlot->graph()->setBrush(QBrush(QColor(255/4.0,160,50,150)));
+
+
+    QColor col = mCurrentColor;
+    col.setAlpha(50);
+
+
+
+    mPlot->graph()->setPen(QPen(mCurrentColor));
+    mPlot->graph()->setBrush(QBrush(col));
 
     mPlot->graph()->setData(mX,mY);
     mPlot->xAxis->rescale();
@@ -153,18 +164,54 @@ void RunToolWidget::showHist()
 //    mHistPlot->graph()->setData(tx, ty);
 
 
+    QColor col = mCurrentColor;
+    col.setAlpha(50);
+
+    newGraph->setBrush(QBrush(col));
+    newGraph->setPen(QPen(mCurrentColor));
+
     mHistPlot->setInteraction(QCP::iRangeZoom,true);
     mHistPlot->setInteraction(QCP::iRangeDrag,true);
 
     mHistPlot->resize(600,400);
 
-    newGraph->rescaleAxes();
+//    newGraph->rescaleAxes();
     mHistPlot->showNormal();
     mHistPlot->replot();
 
 
 
 
+
+}
+
+void RunToolWidget::clearGraph()
+{
+
+    mPlot->clearPlottables();
+    mHistPlot->clearPlottables();
+    mPlot->clearGraphs();
+    mHistPlot->clearPlottables();
+    mPlot->replot();
+    mHistPlot->replot();
+}
+
+void RunToolWidget::getColor()
+{
+
+    setColor(QColorDialog::getColor());
+
+
+
+}
+
+void RunToolWidget::setColor(const QColor &col)
+{
+    mCurrentColor = col;
+    QPixmap pix(32,32);
+    pix.fill(col);
+
+    mColorButton->setIcon(QIcon(pix));
 
 }
 

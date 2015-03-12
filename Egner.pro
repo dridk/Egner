@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     propertylistwidget.cpp \
     populationstatwidget.cpp \
     mutationtoolwidget.cpp \
-    genotypedialog.cpp
+    genotypedialog.cpp \
+    infotoolwidget.cpp
 
 HEADERS  += \
     phenotype.h \
@@ -58,7 +59,8 @@ HEADERS  += \
     propertywidgetcontainer.h \
     populationstatwidget.h \
     mutationtoolwidget.h \
-    genotypedialog.h
+    genotypedialog.h \
+    infotoolwidget.h
 
 FORMS    +=
 

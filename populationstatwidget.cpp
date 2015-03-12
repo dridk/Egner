@@ -59,12 +59,17 @@ void PopulationStatWidget::refresh()
             QCPBars *newGraph = new QCPBars(axisRect->axis(QCPAxis::atBottom),
                                                               axisRect->axis(QCPAxis::atLeft));
 
+
+
             QVector<double> datax;
             QVector<double> datay;
 
             QMap<double,double> mMap;
 
             int s = max - min;
+
+            newGraph->setWidth(1);
+
 
             for (int i=0; i<mPop->count(); ++i)
             {

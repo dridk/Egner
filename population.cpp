@@ -289,3 +289,13 @@ double Population::sd(int x, int y) const
 {
 
 }
+
+void Population::makeMutation(double proba, int step)
+{
+
+    for (int i=0; i<mLists.count(); ++i)
+    {
+        mLists[i].mutate(proba,step);
+    }
+
+}

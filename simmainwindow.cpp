@@ -7,6 +7,8 @@
 #include "inittoolwidget.h"
 #include "runtoolwidget.h"
 #include "knockouttoolwidget.h"
+#include "mutationtoolwidget.h"
+#include "infotoolwidget.h"
 
 SimMainWindow::SimMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -52,7 +54,8 @@ SimMainWindow::SimMainWindow(QWidget *parent) :
     connect(saveAction,SIGNAL(triggered()),this,SLOT(save()));
     connect(clearAction,SIGNAL(triggered()),this,SLOT(clear()));
 
-
+    addTool(new InfoToolWidget);
+    addTool(new MutationToolWidget());
     addTool(new KnockoutToolWidget());
     addTool(new InitToolWidget());
     addTool(new RunToolWidget());

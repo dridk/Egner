@@ -36,6 +36,8 @@ public:
     double mean(int x, int y) const;
     double sd(int x,int y) const;
 
+    void makeMutation(double proba, int step);
+
 
 public slots:
     void run(int iteration = 1);
