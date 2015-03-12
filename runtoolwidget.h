@@ -13,6 +13,7 @@ public:
 public slots:
     void run();
     void showPlot();
+    void showHist();
 
 
 private:
@@ -23,12 +24,14 @@ private:
     QPushButton * mRunButton;
     QProgressDialog * mProgressDialog;
     QCustomPlot * mPlot;
+    QCustomPlot * mHistPlot;
     QCheckBox * mPlotBox;
     QCheckBox * mHistBox;
 
 
     QVector<double> mX;
     QVector<double> mY;
+    int mTotalKilled;
 
 };
 

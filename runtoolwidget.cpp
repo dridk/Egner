@@ -10,6 +10,7 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mPlotBox = new QCheckBox;
     mHistBox = new QCheckBox;
     mPlot  = new QCustomPlot();
+    mHistPlot = new QCustomPlot();
     mMutationBox->setRange(0,1);
     mMutationBox->setSingleStep(0.01);
     setWindowTitle("Run");
@@ -59,16 +60,18 @@ void RunToolWidget::run()
     mProgressDialog->setRange(0,iteration);
 
 
-
-
     mX.clear();
     mY.clear();
 
     double proba = mMutationBox->value();
 
+    mTotalKilled = 0;
+
+
     for (int i = 0; i < iteration; i++) {
 
         int killed = population()->next(proba);
+        mTotalKilled += killed;
 
         qDebug()<<killed;
         mProgressDialog->setValue(i);
@@ -84,6 +87,9 @@ void RunToolWidget::run()
 
     if (mPlotBox->isChecked())
         showPlot();
+
+    if (mHistBox->isChecked())
+        showHist();
 
     emit needRefresh();
 
@@ -117,5 +123,48 @@ void RunToolWidget::showPlot()
 
     mPlot->showNormal();
     mPlot->replot();
+}
+
+void RunToolWidget::showHist()
+{
+
+    QCPBars *newGraph = new QCPBars(mHistPlot->xAxis, mHistPlot->yAxis);
+    mHistPlot->addPlottable(newGraph);
+
+
+    QVector<double> tx;
+    QVector<double> ty;
+
+    qDebug()<<mTotalKilled;
+
+    tx.append(mHistPlot->plottableCount());
+    ty.append(mTotalKilled);
+
+    newGraph->setData(tx,ty);
+
+//    tx.append(mHistPlot->plottableCount());
+//    ty.append(mTotalKilled);
+
+//    QPen pen;
+//    pen.setColor(QColor(0, 0, 255, 200));
+
+//    mHistPlot->graph()->setPen(pen);
+//    mHistPlot->graph()->setBrush(QBrush(QColor(255/mPlot->graphCount(),160,50,150)));
+//    mHistPlot->graph()->setData(tx, ty);
+
+
+    mHistPlot->setInteraction(QCP::iRangeZoom,true);
+    mHistPlot->setInteraction(QCP::iRangeDrag,true);
+
+    mHistPlot->resize(600,400);
+
+    newGraph->rescaleAxes();
+    mHistPlot->showNormal();
+    mHistPlot->replot();
+
+
+
+
+
 }
 
