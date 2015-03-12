@@ -38,6 +38,7 @@ public:
 
     void makeMutation(double proba, int step);
 
+    void setReplicateAlgo(GenotypeNetwork::ReplicateAlgo algo);
 
 public slots:
     void run(int iteration = 1);
@@ -52,6 +53,7 @@ signals:
 
 private:
     QList<GenotypeNetwork> mLists;
+    GenotypeNetwork::ReplicateAlgo mAlgo;
 
 };
 

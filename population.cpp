@@ -5,6 +5,7 @@
 Population::Population(QObject * parent)
     :QObject(parent)
 {
+    setReplicateAlgo(GenotypeNetwork::OneLine);
 }
 
 Population::~Population()
@@ -127,7 +128,13 @@ int Population::next(double proba)
         GenotypeNetwork maman = parents.first();
         GenotypeNetwork papa  = parents.last();
 
+        maman.setReplicateAlgorithm(mAlgo);
+        papa.setReplicateAlgorithm(mAlgo);
+
+
         GenotypeNetwork child = maman + papa;
+
+        child.setReplicateAlgorithm(mAlgo);
 
         child.mutate(proba);
 
@@ -298,4 +305,9 @@ void Population::makeMutation(double proba, int step)
         mLists[i].mutate(proba,step);
     }
 
+}
+
+void Population::setReplicateAlgo(GenotypeNetwork::ReplicateAlgo algo)
+{
+        mAlgo = algo;
 }

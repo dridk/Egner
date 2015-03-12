@@ -10,6 +10,7 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mMutationBox= new QDoubleSpinBox;
     mPlotBox = new QCheckBox;
     mHistBox = new QCheckBox;
+    mAlgoBox = new QComboBox;
     mColorButton = new QToolButton;
     mPlot  = new QCustomPlot();
     mClearGraph =  new QPushButton("Clear graph");
@@ -28,12 +29,16 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     QFormLayout * l = new QFormLayout;
 
     l->addRow("Iteration", mIterationBox);
+    l->addRow("Repl. Algorithm", mAlgoBox);
     l->addRow("Proba muta", mMutationBox);
 
     l->addRow("show Line plot", mPlotBox);
     l->addRow("show Histogram pot", mHistBox);
     l->addRow("Set Color", mColorButton);
 
+
+    mAlgoBox->addItem("One Line",0);
+    mAlgoBox->addItem("Two line",1);
 
     QVBoxLayout * all = new QVBoxLayout;
     all->addLayout(l);
@@ -68,6 +73,16 @@ void RunToolWidget::run()
     mProgressDialog->setWindowTitle("loading");
     mProgressDialog->setRange(0,iteration);
 
+    GenotypeNetwork::ReplicateAlgo algo;
+
+    if (mAlgoBox->currentData() == 0 )
+        algo = GenotypeNetwork::OneLine;
+    if (mAlgoBox->currentData() == 1){
+        algo = GenotypeNetwork::TwoLine;
+        qDebug()<<"set two line";
+    }
+
+    population()->setReplicateAlgo(algo);
 
     mX.clear();
     mY.clear();

@@ -6,6 +6,8 @@ GenotypeNetwork::GenotypeNetwork()
 {
     setMutationProbability(1);
     setMutationRange(1);
+
+    mAlgo = TwoLine;
 }
 
 GenotypeNetwork::GenotypeNetwork(const QVector<double> &v)
@@ -152,6 +154,11 @@ double GenotypeNetwork::max() const
 
 }
 
+void GenotypeNetwork::setReplicateAlgorithm(GenotypeNetwork::ReplicateAlgo algo)
+{
+    mAlgo = algo;
+}
+
 
 const QVector<double> &GenotypeNetwork::vector() const
 {
@@ -254,38 +261,50 @@ GenotypeNetwork GenotypeNetwork::operator+(const GenotypeNetwork &other)
 GenotypeNetwork GenotypeNetwork::add(const GenotypeNetwork &other)
 {
     Q_ASSERT_X(other.geneCount() == geneCount(), "Genotype","Genotype are not compatible. Not same matrix");
-    QVector<double> v;
 
-    GenotypeNetwork newGenotype = other;
+    GenotypeNetwork newGenotype;
 
+    if (mAlgo == TwoLine) {
 
-    int gene = qrand()% geneCount();
+        qDebug()<<"replication two line";
+        newGenotype = other;
+        int gene = qrand()% geneCount();
 
-    for (int x=0; x<geneCount(); ++x)
-    {
-        newGenotype.set(x,gene, at(x,gene));
+        for (int x=0; x<geneCount(); ++x)
+        {
+            newGenotype.set(x,gene, at(x,gene));
+        }
+
+        for (int y=0; y<geneCount(); ++y)
+        {
+            newGenotype.set(gene,y, at(gene,y));
+        }
     }
 
-    for (int y=0; y<geneCount(); ++y)
+    if (mAlgo == OneLine)
     {
-        newGenotype.set(gene,y, at(gene,y));
+        qDebug()<<"replication one line";
+
+        QVector<double> v;
+        for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
+            if(qrand()%2)
+                v<<other.vector().mid(i,geneCount());
+            else
+                v<<vector().mid(i,geneCount());
+
+        }
+
+        newGenotype = GenotypeNetwork(v);
+
+
     }
+
 
     return newGenotype;
 
-    // OLD ALGOR
 
 
-    //    for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
 
-    //        if(qrand()%2)
-    //            v<<other.vector().mid(i,geneCount());
-    //        else
-    //            v<<vector().mid(i,geneCount());
-
-    //    }
-
-    //    return GenotypeNetwork(v);
 }
 
 bool GenotypeNetwork::isSquare(int value)

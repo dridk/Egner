@@ -32,6 +32,7 @@ private:
     QCustomPlot * mPlot;
     QCustomPlot * mHistPlot;
     QCheckBox * mPlotBox;
+    QComboBox * mAlgoBox;
     QCheckBox * mHistBox;
     QColor mCurrentColor;
 

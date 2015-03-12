@@ -14,6 +14,11 @@ class GenotypeNetwork;
 class GenotypeNetwork
 {
 public:
+    enum ReplicateAlgo {
+        OneLine,
+        TwoLine
+    };
+
     GenotypeNetwork();
     GenotypeNetwork(const QVector<double>& v);
     GenotypeNetwork(const QString& raw);
@@ -30,6 +35,7 @@ public:
     void disable(int gene);
     double min() const;
     double max() const;
+    void setReplicateAlgorithm(ReplicateAlgo algo);
 
     const QVector<double> &vector() const;
     QString raw() const;
@@ -53,6 +59,7 @@ private:
     QVector<double> mVector;
     double mMutationProbability;
     double mMutationRange;
+    ReplicateAlgo mAlgo;
 
 };
 
