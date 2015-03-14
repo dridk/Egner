@@ -67,3 +67,6 @@ FORMS    +=
 CONFIG += mobility
 MOBILITY = 
 
+RESOURCES += \
+    gfx.qrc
+

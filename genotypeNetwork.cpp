@@ -7,7 +7,7 @@ GenotypeNetwork::GenotypeNetwork()
     setMutationProbability(1);
     setMutationRange(1);
 
-    mAlgo = TwoLine;
+    mAlgo = OneLine;
 }
 
 GenotypeNetwork::GenotypeNetwork(const QVector<double> &v)
@@ -264,44 +264,16 @@ GenotypeNetwork GenotypeNetwork::add(const GenotypeNetwork &other)
 
     GenotypeNetwork newGenotype;
 
-    if (mAlgo == TwoLine) {
-
-        qDebug()<<"replication two line";
-        newGenotype = other;
-        int gene = qrand()% geneCount();
-
-        for (int x=0; x<geneCount(); ++x)
-        {
-            newGenotype.set(x,gene, at(x,gene));
-        }
-
-        for (int y=0; y<geneCount(); ++y)
-        {
-            newGenotype.set(gene,y, at(gene,y));
-        }
-    }
-
-    if (mAlgo == OneLine)
-    {
-        qDebug()<<"replication one line";
-
-        QVector<double> v;
-        for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
-            if(qrand()%2)
-                v<<other.vector().mid(i,geneCount());
-            else
-                v<<vector().mid(i,geneCount());
-
-        }
-
-        newGenotype = GenotypeNetwork(v);
-
+    QVector<double> v;
+    for (int i=0; i<geneCount()*geneCount(); i+=geneCount()){
+        if(qrand()%2)
+            v<<other.vector().mid(i,geneCount());
+        else
+            v<<vector().mid(i,geneCount());
 
     }
 
-
-    return newGenotype;
-
+   return GenotypeNetwork(v);
 
 
 

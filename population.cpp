@@ -128,13 +128,7 @@ int Population::next(double proba)
         GenotypeNetwork maman = parents.first();
         GenotypeNetwork papa  = parents.last();
 
-        maman.setReplicateAlgorithm(mAlgo);
-        papa.setReplicateAlgorithm(mAlgo);
-
-
-        GenotypeNetwork child = maman + papa;
-
-        child.setReplicateAlgorithm(mAlgo);
+        GenotypeNetwork child = maman + papa + maman;
 
         child.mutate(proba);
 
