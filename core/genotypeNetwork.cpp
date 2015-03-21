@@ -279,6 +279,18 @@ GenotypeNetwork GenotypeNetwork::add(const GenotypeNetwork &other)
 
 }
 
+bool GenotypeNetwork::operator==(const GenotypeNetwork &a)
+{
+
+    return vector() == a.vector();
+
+}
+
+bool GenotypeNetwork::operator!=(const GenotypeNetwork &a)
+{
+        return vector() != a.vector();
+}
+
 bool GenotypeNetwork::isSquare(int value)
 {
 

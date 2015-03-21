@@ -37,12 +37,13 @@ public:
     double sd(int x,int y) const;
 
     void makeMutation(double proba, int step);
-
     void setReplicateAlgo(GenotypeNetwork::ReplicateAlgo algo);
+
+    bool isAllSame();
 
 public slots:
     void run(int iteration = 1);
-    int next(double proba=0);
+    int next(double proba=0, int step = 1);
 
 
 signals:

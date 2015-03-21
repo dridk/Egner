@@ -50,6 +50,8 @@ public:
 
     GenotypeNetwork operator+(const GenotypeNetwork& other);
     GenotypeNetwork add(const GenotypeNetwork& other);
+    bool operator==(const GenotypeNetwork& a);
+    bool operator!=(const GenotypeNetwork& a);
 
 
     static bool isSquare(int value);

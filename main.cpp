@@ -12,36 +12,42 @@
 #include "populationlistwidget.h"
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
     qsrand(QDateTime::currentDateTime ().toTime_t ());
 
 
 
-
-    GenotypeNetwork g1("-7,-1,9,4,-7,14,-3,-7,13");
-    GenotypeNetwork g2("2,21,4,10,8,-1,-3,-7,13");
-
-    GenotypeNetwork r  = g1 + g2;
-
-    qDebug()<<r.raw();
-
-
-//    TestUnit * test = new TestUnit();
-//    QTest::qExec(test);
-//    return 0;
+//    Population pop;
 
 
 
-//    GenotypeNetwork gn("1,2,3,4,5,6,7,8,9");
-//    GenotypeNetwork gb("11,22,33,44,55,66,77,88,99");
+//        pop.init(10,0,1,6);
 
-//    GenotypeNetwork c = gn.add(gb);
-
-//    qDebug()<<c.raw();
+//        GenotypeNetwork a = GenotypeNetwork("0,0,2,4,1,7,5,0,4");
+//        GenotypeNetwork b = GenotypeNetwork("0,1,0,3,1,0,5,8,4");
 
 
-    SimMainWindow w;
-    w.showMaximized();
 
-    return a.exec();
+//        Phenotype r = Phenotype("1,1,1") * a;
+
+//        qDebug()<<r.raw();
+
+    //    TestUnit * test = new TestUnit();
+    //    QTest::qExec(test);
+    //    return 0;
+
+
+
+    //    GenotypeNetwork gn("1,2,3,4,5,6,7,8,9");
+    //    GenotypeNetwork gb("11,22,33,44,55,66,77,88,99");
+
+    //    GenotypeNetwork c = gn.add(gb);
+
+    //    qDebug()<<c.raw();
+
+
+        SimMainWindow w;
+        w.showMaximized();
+
+    return app.exec();
 }

@@ -24,6 +24,8 @@ private:
     QSpinBox * mIterationBox;
     QSpinBox * mParentCountBox;
     QDoubleSpinBox * mMutationBox;
+    QSpinBox * mStepBox;
+    QLabel * mConvergeLabel;
 
     QPushButton * mRunButton;
     QPushButton * mClearGraph;

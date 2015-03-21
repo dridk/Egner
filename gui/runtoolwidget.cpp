@@ -11,6 +11,8 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mPlotBox = new QCheckBox;
     mHistBox = new QCheckBox;
     mAlgoBox = new QComboBox;
+    mStepBox = new QSpinBox;
+    mConvergeLabel = new QLabel;
     mColorButton = new QToolButton;
     mPlot  = new QCustomPlot();
     mClearGraph =  new QPushButton("Clear graph");
@@ -25,11 +27,15 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mProgressDialog->setVisible(false);
 
     mIterationBox->setRange(0,10000);
+    mStepBox->setValue(1);
+    mStepBox->setRange(0,10);
 
     QFormLayout * l = new QFormLayout;
 
     l->addRow("Iteration", mIterationBox);
     l->addRow("Proba muta", mMutationBox);
+    l->addRow("Proba step", mStepBox);
+    l->addRow("Last convergence at ", mConvergeLabel);
 
     l->addRow("show Line plot", mPlotBox);
     l->addRow("show Histogram pot", mHistBox);
@@ -71,21 +77,24 @@ void RunToolWidget::run()
     mProgressDialog->setLabelText("Computing...");
     mProgressDialog->setWindowTitle("loading");
     mProgressDialog->setRange(0,iteration);
+    mConvergeLabel->setText("");
 
     mX.clear();
     mY.clear();
     double proba = mMutationBox->value();
-
+    int step = mStepBox->value();
     mTotalKilled = 0;
 
 
     for (int i = 0; i < iteration; i++) {
 
-        int killed = population()->next(proba);
+        int killed = population()->next(proba,step);
         mTotalKilled += killed;
 
-        qDebug()<<killed;
         mProgressDialog->setValue(i);
+
+        if ((population()->isAllSame()  && (mConvergeLabel->text().isEmpty())))
+            mConvergeLabel->setText(QString("%1").arg(i));
 
 
         mX.append(i);

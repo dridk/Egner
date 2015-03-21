@@ -113,6 +113,7 @@ Phenotype Phenotype::cross(const GenotypeNetwork &other)
         index++;
     }
 
+    qDebug()<<newVector;
     return Phenotype(newVector);
 }
 

@@ -56,7 +56,7 @@ void Population::init(int count, double mean, double sd, int geneCount)
         //Create random genotype
         GenotypeNetwork genotype;
 
-        qDebug()<<i;
+
 
         Phenotype lastPhenotype;
         lastPhenotype.fill(1, geneCount);
@@ -117,7 +117,7 @@ void Population::run(int iteration)
     emit finished();
 }
 
-int Population::next(double proba)
+int Population::next(double proba, int step)
 {
     QList<GenotypeNetwork> nextGeneration;
     int killed = 0;
@@ -125,18 +125,23 @@ int Population::next(double proba)
     {
 
         QList<GenotypeNetwork> parents = randomParent();
+
+        qDebug()<<"parents "<< parents.size();
+
         GenotypeNetwork maman = parents.first();
         GenotypeNetwork papa  = parents.last();
 
-        GenotypeNetwork child = maman + papa + maman;
+        GenotypeNetwork child = maman.add(papa);
 
-        child.mutate(proba);
+        child.mutate(proba, step);
 
         if (child.testViability()){
             nextGeneration.append(child);
         }
-        else
+        else {
             killed++;
+            qDebug()<<"non viable"<<child.raw();
+        }
     }
 
     // swap list
@@ -303,5 +308,25 @@ void Population::makeMutation(double proba, int step)
 
 void Population::setReplicateAlgo(GenotypeNetwork::ReplicateAlgo algo)
 {
-        mAlgo = algo;
+    mAlgo = algo;
+}
+
+bool Population::isAllSame()
+{
+
+    if (mLists.isEmpty())
+        return false;
+
+      GenotypeNetwork a = mLists.first();
+
+
+       foreach (GenotypeNetwork b , mLists)
+       {
+           if (a != b)
+               return false;
+       }
+
+
+
+    return true;
 }
