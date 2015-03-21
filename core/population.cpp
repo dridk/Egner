@@ -47,8 +47,13 @@ int Population::count() const
 void Population::init(int count, double mean, double sd, int geneCount)
 {
     mLists.clear();
-    std::default_random_engine generator;
+
+    std::random_device rd;
+
+
+    std::default_random_engine generator(rd());
     std::normal_distribution<double> distribution(mean,sd);
+
 
     // Create 'count' entity....
     for (int i=0; i<count; ++i) {
