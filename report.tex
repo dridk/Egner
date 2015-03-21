@@ -5,7 +5,7 @@
 \usepackage{graphicx}
 \usepackage{listings}
 
-\title {Simulation d'un reseau de régulation de gène} 
+\title {EGNER\\ Simulation d'un reseau de régulation de gène} 
 \author {Sacha Schutz}
 \date {\today}
 
@@ -15,8 +15,7 @@
 	\maketitle
 
 	\section{Introduction} % (fold)	
-	Cette étude porte sur la simulation d'un réseaux de régulation de gène reprenant le modèle introduit par A. Wagner. Il s'agit de représenter l'Evolution d'un population possédant n gène ayant tous une activité promotrice sur ces même n gènes. L'expression de ce réseau génétique, est défini par un phénotype viable ou non , subissant une pression de sélection au cours du temps. 
-	Plusieurs paramètres différents seront testé dans cette simulation afin d'observer des phénomènes d'adaptation différents. 
+	Cette étude porte sur la simulation d'un réseaux de régulation de gène reprenant le modèle introduit par A. Wagner. Il s'agit de représenter l'Evolution d'un population possédant n gène ayant tous une activité promotrice sur ces même n gènes. L'expression de ce réseau génétique, est défini par un phénotype viable ou non , subissant une pression de sélection au cours du temps. Afin de réaliser ces simulations, le logiciel Egner sous license GPL, a été créer permettant de définir plusieurs paramètre de simuation et d'observer des phénomènes emergents au modèle.
 
 	\begin{figure}[h]
 	\label{figure1}
@@ -66,15 +65,61 @@
 	\end{lstlisting}
 
 	\subsubsection {Gui}
-	L'interface graphique a été réalisé grâce au Framework Qt. Disponible sous double license LGPL, Qt permet la création d'interface graphique de grande qualité et s'execute sous toutes les platformes windows, mac et linux. Les differents graphiques ont été réalisé avec la librairie QCustomPlot \footnote{www.qcustomplot.com} egalement sous license GPL. 
+	L'interface graphique a été réalisé grâce au Framework Qt. Disponible sous double license LGPL, Qt permet la création d'interface graphique de grande qualité et s'execute sous toutes les platformes windows, mac et linux. Les differents graphiques ont été réalisé avec la librairie QCustomPlot \footnote{www.qcustomplot.com} egalement sous license GPL. \\
+	Chaques GenotypeNetwork a été representé visuellement sous forme d'une matrice (figure \ref{figure2}) ou chaques coefficient est coloré suivant un gradient rouge vert.Ces deux couleurs representant respectivement la valeur minimal et maximal des coefficient sur l'ensemble de la population.
+
+	\begin{figure}[h]
+	\label{figure2}
+	\caption[test]{Representation graphique d'un GenotypeNetwork }
+	\centering
+	\includegraphics[scale=1]{genotypepixmap.png}
+	\end{figure}
+
+
+	\clearpage
+	Le logiciel comprend 2 vues de la population courrante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure \ref{figure3} résume toutes les actions possible du logiciel.
+	\subsubsection {La Vue Grid}
+	Cette vue affiche la population courante en listant l'ensemble des genotypeNetwork par leurs representations graphiques. C'est une vision idéal pour observer les differentes valeurs des coefficients dans leurs globalité. 
+	\subsubsection { La vue Stat}
+	Cette vue represente les frequences des coeffients pour chaques gènes. Ainsi, si la population est constitué d'indivdu avec 3 gènes, il y a yaura 9 coefficient, soit 9 histogramme. Cette representation est interessante, pour visualiser une population généré par une loi normal.
+	\subsubsection {L'outil Initialisation}
+	Permet de générer une population initial en specifiant les propriétés de la loi normal ainsi que le nombre de gène par individus.
+	\subsubsection{ L'outil Run}
+	Permet de lancer la simulation et possède les actions pour générer les graphique lineplot et histogram plot. LinePlot affiuche la courbe de viabilité global de la population pour chaques itération. tandis que Histogram Plot affiche la viabilité global depuis le dernier run. 
+	\subsubsection{L'outil Knockout}
+	Permet de desactiver des gènes sur la population courante . Pour chaques individus, les coefficients du gènes selectionné sont mis à zero. 
+	\subsubsection{L'outil mutation}
+	Permet quand à lui de générer des mutation aléatoire sur la population en cours. En fonction de la probabilité défini, un nombre d'individu subira une mutation de ses coefficients par une addiction ou soustraction de la valeur Step.
+
+	
 
 
 	\section {Résultat}
+	Plusieurs experiences ont été réalisé avec le logiciel Egner. Ci dessous seront décris chaques expériences séparément avec leurs résultats .
+
+	\subsection{XP1 : Nécessité ou contingence}
+	Lors de plusieurs essaie, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénisation des genotypes. C'est à dire qu'a partir d'une population initial variable, on observe au bout de plusieurs iteration, une population de clone avec le même génotype. La question etait de savoir si ce dernier clone etait le résultat d'une finalité optimal depuis la population initial, ou le résultat d'une contingence. \\
+	Une population initial aléatoire de 500 individus viable a   été généré, puis sauvegarder dans un fichier. A partir de celui ci, 5 Runs successif de 1000 itération ont été réalisé. Les clones finaux ont alors été comparé entre Run . 
+
+	\begin{figure}[h]
+	\label{xp1}
+	\caption[test]{Genotypes finaux à partir de la même population initial}
+	\centering
+	\includegraphics[scale=0.5]{xp1.png}
+	\end{figure}
+
+
+
 
 	\subsection{Perrinou}
 
 
 	\section {Conclusion}
 
-		
+		\begin{figure}[p]
+	\label{figure3}
+	\vspace*{-3cm}
+	\caption[test]{}
+	\includegraphics[scale=0.4, angle=90]{guituto.png}
+	\end{figure}
 	\end{document}
