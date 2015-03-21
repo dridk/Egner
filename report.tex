@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\title {Simulation d'un reseau de régulation de gène} 
+\author {Sacha Schutz}
+\date {\today}
+
+
+	\begin{document}
+
+	\maketitle
+
+	\section{Introduction} % (fold)	
+	Cette étude porte sur la simulation d'un réseaux de régulation de gène reprenant le modèle introduit par A. Wagner. Il s'agit de représenter l'Evolution d'un population possédant n gène ayant tous une activité promotrice sur ces même n gènes. L'expression de ce réseau génétique, est défini par un phénotype viable ou non , subissant une pression de sélection au cours du temps. 
+	Plusieurs paramètres différents seront testé dans cette simulation afin d'observer des phénomènes d'adaptation différents. 
+
+	\begin{figure}[h]
+	\label{figure1}
+	\caption[test]{Représentation d'un réseau de 3 gène }
+	\centering
+	\includegraphics[scale=0.5]{shema1.png}
+	\end{figure}
+
+	\section{Materiels et Méthodes} 
+	La modélisation de ce reseau génétique est illustré par la figure \ref{figure1}. L'activité represseur ou activateur des gènes est défini par une matrice de taille [NxN] ou N est le nombre de gène du reseau. Le phénotype, est quand à lui défini par un vecteur de taille [N]. \\
+	La simulation a été écris entièrement en C++11 afin de béneficier de la programmation orienté objets et de profiter d'une vitesse de calcul convenable. Le framework Qt \footnote{Pronnoncé "Cute"  http://www.qt.io} a quand à lui permis la réalisation d'une interface graphique permettant d'interagir et de faire des observartions sur la population. 
+	\subsection {Architecture}
+	Le programme est divisé en 2 partie. Une partie appelé "core" , contenant la logique pure et les classes de base necessaires à la simualation. L'autre partie, appelé "gui" contient les differents composants de l'interface graphique.
+	\subsubsection {Core}
+	Le reseau de gène a été modelisé sous forme d'une classe appelé "GenotypeNetwork" contenant une matrice de dimension [NxN]. Cette classe possède des methodes d'écriture et de lecture des donnée matricielles ainsi que d'autre methodes pour générer des mutations aléatoire et des knockout de gène.
+	Le Phenotype est egalement sous forme d'une classe appelé Phenotype, contenant un vecteur de dimension [N] et ses methodes d'acces. 
+	La surcharge d'operateur, permise grâce au C++, a été appliqué a chacune de ces classes afin d'avoir des regles combinatoires. La code du listing \ref{code1} montre comment combiner 2 genotype avec eventuellement un crossing over.  Celui du listing \ref{code2}, comment effectuer le produit matricielle entre une genotype et un phenotype
+
+	\begin{lstlisting}[language=C++, caption=Addition de genotype, label={code1}]
+
+	GenotypeNetwork mother("0,0,2,4,1,7,5,0,4");
+	GenotypeNetwork father("0,1,0,3,1,0,5,4,4");
+	GenotypeNetwork child = mother + father
+	//donnera par exemple : 0,0,2,3,1,0,5,8,4
+	\end{lstlisting}
+
+	\begin{lstlisting}[language=C++, caption=produit d'un genotype et d'un phenotype, label={code2}]
+
+	GenotypeNetwork mother("0,0,2,4,1,7,5,0,4");
+	Phenotype initial("1,1,1");
+	initial = initial * mother;
+	//donnera : -1,-1,1
+	\end{lstlisting}
+
+	Tous les individus representé par leurs genotypeNetwork sont contenu dans un classe "Population". Cette classe contient les methodes d'ajouts et de suppression des individus. Mais ce sont les methodes \emph{init(size, mean, sd, geneCount)} et \emph{int next()} qui reste les plus importante. La première permet l'initiation d'une population aléatoire de taille "size". Chaque individu contient un nombre de gène défini par geneCount, dont les coefficient suivent une loi normal. Cette loi normal a été permise par l'utilisation du C++11 et de sa nouvelle librarie standard. \\
+	La deuxième permet de basculer la population vers la nouvelle population de la génération suivante et retourne le nombre d'individu non viable généré et supprimé tant que la nouvelle population n'a pas atteind sa taille maximale. Ce basculement d'une popluation à l'autre a été optimisé par la methode swap(std::vector) de la std
+	. Voir l'example du listing \ref{code3} 
+	\\
+	\\
+
+	\begin{lstlisting}[language=C++, caption=Generation d'une population et basculement vers la génération suivante, label={code3}]
+
+	Population pop;
+	pop.init(300, mean=0, sd=1, geneCount=3); 
+	int deadNumber = pop.next();
+
+	\end{lstlisting}
+
+	\subsubsection {Gui}
+	L'interface graphique a été réalisé grâce au Framework Qt. Disponible sous double license LGPL, Qt permet la création d'interface graphique de grande qualité et s'execute sous toutes les platformes windows, mac et linux. Les differents graphiques ont été réalisé avec la librairie QCustomPlot \footnote{www.qcustomplot.com} egalement sous license GPL. 
+
+
+	\section {Résultat}
+
+	\subsection{Perrinou}
+
+
+	\section {Conclusion}
+
+		
+	\end{document}
