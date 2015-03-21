@@ -97,9 +97,10 @@
 	\section {Résultat}
 	Plusieurs experiences ont été réalisé avec le logiciel Egner. Ci dessous seront décris chaques expériences séparément avec leurs résultats .
 
-	\subsection{XP1 : Nécessité ou contingence}
+	\subsection{Homogénisation de la population}
+	\subsubsection{XP1 : Nécessité ou contingence ?}
 	Lors de plusieurs essaie, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénisation des genotypes. C'est à dire qu'a partir d'une population initial variable, on observe au bout de plusieurs iteration, une population de clone avec le même génotype. La question etait de savoir si ce dernier clone etait le résultat d'une finalité optimal depuis la population initial, ou le résultat d'une contingence. \\
-	Une population initial aléatoire de 500 individus viable a   été généré, puis sauvegarder dans un fichier. A partir de celui ci, 5 Runs successif de 1000 itération ont été réalisé. Les clones finaux ont alors été comparé entre Run . 
+	Une population initial aléatoire de 500 individus viable a   été généré, puis sauvegarder dans un fichier. A partir de celui ci, 5 Runs successif de 1000 itération ont été réalisé. Les clones finaux ont alors été comparé \ref{xp1}
 
 	\begin{figure}[h]
 	\label{xp1}
@@ -107,7 +108,13 @@
 	\centering
 	\includegraphics[scale=0.5]{xp1.png}
 	\end{figure}
+	A partir de la même population initial, et sans mutation, les clones finaux sont toujours différent. Il n'y a pas de génotype qui se distingue. Cette observation est tout à fait cohérente avec le modéle de selection utilisé, à savoir la stabilité du phénotype. 
 
+	\subsubsection{XP2: Temps d'homogénisation de la population}
+	A partir de la première expérience, une question s'est posé. Quels sont les facteurs influençant le vitesse d'homogenisation de la population. C'est à dire à partir de quel itération la population devient homogène. 
+	2 facteurs ont été testé. La taille de la population et le nombre de gène.
+	{GRAPH}
+	Au vu de ces résultats, il s'avère clairement que le nombre d’individu influence plus fortement le temps d' homogénisation. Ceci étant , l'experience reste logique. Plus le nombre d'individu est grand, et plus la dillution des gènes prendra du temps. 
 
 
 
