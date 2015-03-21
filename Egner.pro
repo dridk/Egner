@@ -15,52 +15,55 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    phenotype.cpp \
-    abstractwatcher.cpp \
-    genotypewidget.cpp \
-    genotypeNetwork.cpp \
-    simmainwindow.cpp \
-    abstracttoolwidget.cpp \
-    inittoolwidget.cpp \
-    listtoolwidget.cpp \
-    plottoolwidget.cpp \
-    qcustomplot.cpp \
-    testunit.cpp \
-    population.cpp \
-    genotypepixmap.cpp \
-    populationlistwidget.cpp \
-    runtoolwidget.cpp \
-    knockouttoolwidget.cpp \
-    propertywidgetcontainer.cpp \
-    propertylistwidget.cpp \
-    populationstatwidget.cpp \
-    mutationtoolwidget.cpp \
-    genotypedialog.cpp \
-    infotoolwidget.cpp
+    core/genotypeNetwork.cpp \
+    core/phenotype.cpp \
+    core/population.cpp \
+    gui/abstracttoolwidget.cpp \
+    gui/abstractwatcher.cpp \
+    gui/genotypedialog.cpp \
+    gui/genotypepixmap.cpp \
+    gui/genotypewidget.cpp \
+    gui/infotoolwidget.cpp \
+    gui/inittoolwidget.cpp \
+    gui/knockouttoolwidget.cpp \
+    gui/listtoolwidget.cpp \
+    gui/mutationtoolwidget.cpp \
+    gui/plottoolwidget.cpp \
+    gui/populationlistwidget.cpp \
+    gui/populationstatwidget.cpp \
+    gui/propertylistwidget.cpp \
+    gui/propertywidgetcontainer.cpp \
+    gui/qcustomplot.cpp \
+    gui/runtoolwidget.cpp \
+    gui/simmainwindow.cpp \
+    test/testunit.cpp
+
 
 HEADERS  += \
-    phenotype.h \
-    abstractwatcher.h \
-    genotypewidget.h \
-    genotypeNetwork.h \
-    simmainwindow.h \
-    abstracttoolwidget.h \
-    inittoolwidget.h \
-    listtoolwidget.h \
-    plottoolwidget.h \
-    qcustomplot.h \
-    testunit.h \
-    population.h \
-    genotypepixmap.h \
-    populationlistwidget.h \
-    runtoolwidget.h \
-    knockouttoolwidget.h \
-    propertylistwidget.h \
-    propertywidgetcontainer.h \
-    populationstatwidget.h \
-    mutationtoolwidget.h \
-    genotypedialog.h \
-    infotoolwidget.h
+    core/genotypeNetwork.h \
+    core/phenotype.h \
+    core/population.h \
+    gui/abstracttoolwidget.h \
+    gui/abstractwatcher.h \
+    gui/genotypedialog.h \
+    gui/genotypepixmap.h \
+    gui/genotypewidget.h \
+    gui/infotoolwidget.h \
+    gui/inittoolwidget.h \
+    gui/knockouttoolwidget.h \
+    gui/listtoolwidget.h \
+    gui/mutationtoolwidget.h \
+    gui/plottoolwidget.h \
+    gui/populationlistwidget.h \
+    gui/populationstatwidget.h \
+    gui/propertylistwidget.h \
+    gui/propertywidgetcontainer.h \
+    gui/qcustomplot.h \
+    gui/runtoolwidget.h \
+    gui/simmainwindow.h \
+    test/testunit.h
+
+INCLUDEPATH += gui core test
 
 FORMS    +=
 
@@ -68,5 +71,5 @@ CONFIG += mobility
 MOBILITY = 
 
 RESOURCES += \
-    gfx.qrc
+    gfx/gfx.qrc
 
