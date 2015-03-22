@@ -107,7 +107,7 @@ void SimMainWindow::open()
 void SimMainWindow::refresh()
 {
     mListWidget->refresh();
-    //mStatWidget->refresh();
+    mStatWidget->refresh();
 
     foreach (AbstractToolWidget * t, mTools)
         t->refresh();

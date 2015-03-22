@@ -1,7 +1,7 @@
 #include "population.h"
 #include <QDebug>
 #include <QFile>
-#include "Individu.h"
+
 Population::Population(QObject * parent)
     :QObject(parent)
 {
@@ -157,29 +157,6 @@ int Population::next(double proba, int step)
             killed++;
             qDebug()<<"non viable"<<child.raw();
         }
-
-
-        Individu p (papa.raw());
-        Individu m (maman.raw());
-        Individu c (child.raw());
-
-        Individu iii(child.raw());
-
-
-
-        Individu test(p.getGenotype(), m.getGenotype(),1, papa.geneCount(), true);
-
-        qDebug()<<test.isViable();
-        if (!p.isViable())
-            qDebug()<<"NON VIABLE";
-
-        //        qDebug()<<child.testViability()<<" "<<c.isViable();
-
-        //        qDebug()<<child.raw();
-        //        qDebug()<<c.getGenotype();
-
-
-
     }
 
     // swap list

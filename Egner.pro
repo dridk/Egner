@@ -36,8 +36,7 @@ SOURCES += main.cpp\
     gui/qcustomplot.cpp \
     gui/runtoolwidget.cpp \
     gui/simmainwindow.cpp \
-    test/testunit.cpp \
-    Individu.cpp
+    test/testunit.cpp
 
 
 HEADERS  += \
@@ -63,7 +62,6 @@ HEADERS  += \
     gui/runtoolwidget.h \
     gui/simmainwindow.h \
     test/testunit.h \
-    Individu.h \
     global.h
 
 INCLUDEPATH += gui core test
