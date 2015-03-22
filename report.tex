@@ -26,12 +26,12 @@
 
 	\section{Materiels et Méthodes} 
 	La modélisation de ce reseau génétique est illustré par la figure \ref{figure1}. L'activité represseur ou activateur des gènes est défini par une matrice de taille [NxN] ou N est le nombre de gène du reseau. Le phénotype, est quand à lui défini par un vecteur de taille [N]. \\
-	La simulation a été écris entièrement en C++11 afin de béneficier de la programmation orienté objets et de profiter d'une vitesse de calcul convenable. Le framework Qt \footnote{Pronnoncé "Cute"  http://www.qt.io} a quand à lui permis la réalisation d'une interface graphique permettant d'interagir et de faire des observartions sur la population. 
+	La simulation a été écris entièrement en C++11 afin de béneficier de la programmation orienté objets et de profiter d'une vitesse de calcul convenable. Le framework Qt \footnote{Pronnoncé Cute  http://www.qt.io} a quand à lui permis la réalisation d'une interface graphique permettant d'interagir et de faire des observartions sur la population. L'ensemble du code source est disponible sur \emph{https://github.com/dridk/Egner}
 	\subsection {Architecture}
-	Le programme est divisé en 2 partie. Une partie appelé "core" , contenant la logique pure et les classes de base necessaires à la simualation. L'autre partie, appelé "gui" contient les differents composants de l'interface graphique.
+	Le code source est divisé en 2 partie. Une partie appelé \textbf{Core} , contenant la logique pure et les classes de base nécessaires à la simulation. L'autre partie, appelé \textbf{Gui} contient les differents composants de l'interface graphique.
 	\subsubsection {Core}
-	Le reseau de gène a été modelisé sous forme d'une classe appelé "GenotypeNetwork" contenant une matrice de dimension [NxN]. Cette classe possède des methodes d'écriture et de lecture des donnée matricielles ainsi que d'autre methodes pour générer des mutations aléatoire et des knockout de gène.
-	Le Phenotype est egalement sous forme d'une classe appelé Phenotype, contenant un vecteur de dimension [N] et ses methodes d'acces. 
+	Le réseau de gène a été modelisé sous forme d'une classe appelé \emph{GenotypeNetwork} contenant une matrice de dimension [NxN]. Cette classe possède des methodes d'écriture et de lecture des donnée matricielles ainsi que d'autre methodes pour générer des mutations aléatoire et des knockout de gène.
+	Le Phenotype est représenté par la classe  \emph{Phenotype}, contenant un vecteur de dimension [N] et ses methodes d'acces. 
 	La surcharge d'operateur, permise grâce au C++, a été appliqué a chacune de ces classes afin d'avoir des regles combinatoires. La code du listing \ref{code1} montre comment combiner 2 genotype avec eventuellement un crossing over.  Celui du listing \ref{code2}, comment effectuer le produit matricielle entre une genotype et un phenotype
 
 	\begin{lstlisting}[language=C++, caption=Addition de genotype, label={code1}]
@@ -50,8 +50,8 @@
 	//donnera : -1,-1,1
 	\end{lstlisting}
 
-	Tous les individus representé par leurs genotypeNetwork sont contenu dans un classe "Population". Cette classe contient les methodes d'ajouts et de suppression des individus. Mais ce sont les methodes \emph{init(size, mean, sd, geneCount)} et \emph{int next()} qui reste les plus importante. La première permet l'initiation d'une population aléatoire de taille "size". Chaque individu contient un nombre de gène défini par geneCount, dont les coefficient suivent une loi normal. Cette loi normal a été permise par l'utilisation du C++11 et de sa nouvelle librarie standard. \\
-	La deuxième permet de basculer la population vers la nouvelle population de la génération suivante et retourne le nombre d'individu non viable généré et supprimé tant que la nouvelle population n'a pas atteind sa taille maximale. Ce basculement d'une popluation à l'autre a été optimisé par la methode swap(std::vector) de la std
+	Tous les indivdus défini par un \emph{GenotypeNetwork} sont contenu dans un classe \emph{Population}. Cette classe contient les méthodes d'ajouts et de suppression des individus. Mais ce sont les methodes \emph{init(size, mean, sd, geneCount)} et \emph{int next()} qui reste les plus importante. La première permet l'initiation d'une population aléatoire de taille \emph{size}, oû chaques individus contient un nombre de gène défini par \emph{geneCount}, dont les coefficients suivent une loi normal de moyenne \emph{mean} et d'ecart type \emph{sd}. Le calcul de cette loi normal a été permise par l'utilisation du C++11 et de sa nouvelle librarie standard . \\
+	La deuxième permet de basculer de l'ancienne à la nouvelle population et retourne le nombre d'individu non viable qui a été crée. Ce basculement d'une popluation à l'autre a été optimisé par la methode swap(std::vector) de la std.
 	. Voir l'example du listing \ref{code3} 
 	\\
 	\\
@@ -77,7 +77,7 @@
 
 
 	\clearpage
-	Le logiciel comprend 2 vues de la population courrante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure \ref{figure3} résume toutes les actions possible du logiciel.
+	Le code source comprend 2 vues de la population courrante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure \ref{figure3} résume toutes les actions possible du logiciel.
 	\subsubsection {La Vue Grid}
 	Cette vue affiche la population courante en listant l'ensemble des genotypeNetwork par leurs representations graphiques. C'est une vision idéal pour observer les differentes valeurs des coefficients dans leurs globalité. 
 	\subsubsection { La vue Stat}
@@ -99,8 +99,8 @@
 
 	\subsection{Homogénisation de la population}
 	\subsubsection{XP1 : Nécessité ou contingence ?}
-	Lors de plusieurs essaie, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénisation des genotypes. C'est à dire qu'a partir d'une population initial variable, on observe au bout de plusieurs iteration, une population de clone avec le même génotype. La question etait de savoir si ce dernier clone etait le résultat d'une finalité optimal depuis la population initial, ou le résultat d'une contingence. \\
-	Une population initial aléatoire de 500 individus viable a   été généré, puis sauvegarder dans un fichier. A partir de celui ci, 5 Runs successif de 1000 itération ont été réalisé. Les clones finaux ont alors été comparé \ref{xp1}
+	Lors de plusieurs essaie, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénéisation des génotypes. C'est à dire qu'a partir d'une population initial variable, on observe au bout de plusieurs itération, une population de clone avec le même génotype. La question était de savoir si ce dernier clone était le résultat d'une finalité optimal depuis la population initial, ou le résultat d'une contingence. \\
+	Une population initial aléatoire de 200 individus viable a été généré, puis sauvegarder dans un fichier. A partir de celui ci, plusieurs run de 1000 itération ont été réalisé puis comparé. Comme vous pouvez le voir sur la figure \ref{xp1}, les clones finaux sont différents et ne convergent pas à priori vers un même génotype. 
 
 	\begin{figure}[h]
 	\label{xp1}
@@ -108,7 +108,7 @@
 	\centering
 	\includegraphics[scale=0.5]{xp1.png}
 	\end{figure}
-	A partir de la même population initial, et sans mutation, les clones finaux sont toujours différent. Il n'y a pas de génotype qui se distingue. Cette observation est tout à fait cohérente avec le modéle de selection utilisé, à savoir la stabilité du phénotype. 
+	A partir de la même population initial, et sans mutation, les clones finaux sont toujours différent. Il n'y a pas de génotype qui se distingue. Cette observation est tout à fait cohérente avec le modelé de sélection utilisé, à savoir la stabilité du phénotype. 
 
 	\subsubsection{XP2: Temps d'homogénisation de la population}
 	A partir de la première expérience, une question s'est posé. Quels sont les facteurs influençant le vitesse d'homogenisation de la population. C'est à dire à partir de quel itération la population devient homogène. 
@@ -127,6 +127,6 @@
 	\label{figure3}
 	\vspace*{-3cm}
 	\caption[test]{}
-	\includegraphics[scale=0.4, angle=90]{guituto.png}
+	\includegraphics[scale=0.2, angle=90]{guituto.png}
 	\end{figure}
 	\end{document}
