@@ -84,6 +84,9 @@ void Population::init(int count, double mean, double sd, int geneCount, bool flo
 
         if (genotype.lastPhenotype() == refPhenotype)
             append(genotype);
+
+        emit initializing(mLists.count());
+
     }
 }
 

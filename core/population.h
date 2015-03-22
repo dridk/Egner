@@ -51,6 +51,7 @@ signals:
     void started();
     void running(int killed);
     void finished();
+    void initializing(int count);
 
 
 private:

@@ -8,6 +8,7 @@ InitToolWidget::InitToolWidget(QWidget * parent)
     mSdSpinBox= new QDoubleSpinBox;
     mCountSpinBox= new QSpinBox;
     mGeneCountSpinBox= new QSpinBox;
+    mProgressBar = new QProgressBar;
     mOkButton = new QPushButton("Generate");
     mFloatingBox = new QCheckBox();
     mMeanSpinBox->setValue(0);
@@ -31,6 +32,7 @@ InitToolWidget::InitToolWidget(QWidget * parent)
 
     QVBoxLayout * all = new QVBoxLayout;
     all->addLayout(cLayout);
+    all->addWidget(mProgressBar);
     all->addWidget(mOkButton);
 
 
@@ -56,11 +58,15 @@ void InitToolWidget::populate()
     if (mCountSpinBox->value() == 0)
         return;
 
+
     int count = mCountSpinBox->value();
     double mean = mMeanSpinBox->value();
     double sd = mSdSpinBox->value();
     int geneCount = mGeneCountSpinBox->value();
     bool floating = mFloatingBox->checkState() != Qt::Checked;
+
+    mProgressBar->setRange(0,count);
+    connect(population(),SIGNAL(initializing(int)),mProgressBar,SLOT(setValue(int)));
 
     population()->init(count, mean, sd, geneCount,floating);
 
