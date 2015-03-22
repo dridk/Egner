@@ -75,14 +75,13 @@ void Population::init(int count, double mean, double sd, int geneCount, bool flo
     mLists.clear();
 
     // Create 'count' entity....
-    Phenotype refPhenotype;
     while (mLists.count() < count)
     {
         GenotypeNetwork genotype = randomGenotype(mean,sd,geneCount,floating);
         if (mLists.isEmpty())
-            refPhenotype = genotype.lastPhenotype();
+            mCurrentPhenotype = genotype.lastPhenotype();
 
-        if (genotype.lastPhenotype() == refPhenotype)
+        if (genotype.lastPhenotype() == mCurrentPhenotype)
             append(genotype);
 
         emit initializing(mLists.count());
@@ -153,7 +152,7 @@ int Population::next(double proba, int step)
         Phenotype lastPhenotype;
         lastPhenotype.fill(1, child.geneCount());
 
-        if (child.testViability()) {
+        if ( child.testViability()  ) {
             nextGeneration.append(child);
         }
         else {

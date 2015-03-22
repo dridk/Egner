@@ -57,6 +57,7 @@ signals:
 private:
     QList<GenotypeNetwork> mLists;
     GenotypeNetwork::ReplicateAlgo mAlgo;
+    Phenotype mCurrentPhenotype;
 
 };
 
