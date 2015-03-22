@@ -4,6 +4,8 @@
 \usepackage[french]{babel}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{float}
+\usepackage[caption = false]{subfig}
 
 \title {EGNER\\ Simulation d'un reseau de régulation de gène} 
 \author {Sacha Schutz}
@@ -77,7 +79,7 @@
 
 
 	\clearpage
-	Le code source comprend 2 vues de la population courrante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure \ref{figure3} résume toutes les actions possible du logiciel.
+	Le code source comprend 2 vues de la population courrante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure résume toutes les actions possible du logiciel.
 	\subsubsection {La Vue Grid}
 	Cette vue affiche la population courante en listant l'ensemble des genotypeNetwork par leurs representations graphiques. C'est une vision idéal pour observer les differentes valeurs des coefficients dans leurs globalité. 
 	\subsubsection { La vue Stat}
@@ -97,10 +99,10 @@
 	\section {Résultat}
 	Plusieurs experiences ont été réalisé avec le logiciel Egner. Ci dessous seront décris chaques expériences séparément avec leurs résultats .
 
-	\subsection{Homogénisation de la population}
-	\subsubsection{XP1 : Nécessité ou contingence ?}
+	\subsection{Convergence ou Contingence}
+	\subsubsection{Homogénisation de la population}
 	Lors de plusieurs essaie, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénéisation des génotypes. C'est à dire qu'a partir d'une population initial variable, on observe au bout de plusieurs itération, une population de clone avec le même génotype. La question était de savoir si ce dernier clone était le résultat d'une finalité optimal depuis la population initial, ou le résultat d'une contingence. \\
-	Une population initial aléatoire de 200 individus viable a été généré, puis sauvegarder dans un fichier. A partir de celui ci, plusieurs run de 1000 itération ont été réalisé puis comparé. Comme vous pouvez le voir sur la figure \ref{xp1}, les clones finaux sont différents et ne convergent pas à priori vers un même génotype. 
+	Une population initial aléatoire de 200 individus viable de 3 gène a été généré, puis sauvegarder dans un fichier xp1reference.txt. A partir de celui ci, plusieurs run de 2000 itération\footnote{Empiriquement, l'homogénisation se passe avant 2000 itération} ont été réalisé. Pour chaque run, le clone final a été sauvegardé. Comme vous pouvez le voir sur la figure \ref{xp1}, les clones finaux sont différents et ne convergent pas à priori vers un même génotype. 
 
 	\begin{figure}[h]
 	\label{xp1}
@@ -108,25 +110,101 @@
 	\centering
 	\includegraphics[scale=0.5]{xp1.png}
 	\end{figure}
-	A partir de la même population initial, et sans mutation, les clones finaux sont toujours différent. Il n'y a pas de génotype qui se distingue. Cette observation est tout à fait cohérente avec le modelé de sélection utilisé, à savoir la stabilité du phénotype. 
-
-	\subsubsection{XP2: Temps d'homogénisation de la population}
-	A partir de la première expérience, une question s'est posé. Quels sont les facteurs influençant le vitesse d'homogenisation de la population. C'est à dire à partir de quel itération la population devient homogène. 
-	2 facteurs ont été testé. La taille de la population et le nombre de gène.
-	{GRAPH}
-	Au vu de ces résultats, il s'avère clairement que le nombre d’individu influence plus fortement le temps d' homogénisation. Ceci étant , l'experience reste logique. Plus le nombre d'individu est grand, et plus la dillution des gènes prendra du temps. 
 
 
+	A partir des ces 50 clones obtenus, un box plot \ref{xp1.1} a alors été réalisé représentant la proportion des coefficients des différents génotype.
 
-	\subsection{Perrinou}
-
-
-	\section {Conclusion}
-
-		\begin{figure}[p]
-	\label{figure3}
-	\vspace*{-3cm}
-	\caption[test]{}
-	\includegraphics[scale=0.2, angle=90]{guituto.png}
+	\begin{figure}[h]
+	\label{xp1.1}
+	\centering
+	\caption[test]{Repartition des coefficients des genotypes finaux sur 50 Runs depuis la même population initiale}
+	\includegraphics[scale=0.4]{xp1-1.png}
 	\end{figure}
+
+
+	\subsubsection{ Temps d'homogénisation de la population}
+	A partir de la première expérience, une question s'est posé. Quels sont les facteurs influençant le vitesse d'homogenisation de la population. C'est à dire à partir de quel itération la population devient homogène. 
+	2 facteurs ont été testé. La taille de la population et le nombre de gène. 3 tailles de population initial ont été testé 100, 200 et 300 avec un nombre de gène variant de 3 à 5. Chaque combinaison a été testé 10 fois. Un boxplot \ref{xp2} a alors été réalisé pour chaque population. L'ordonnée représente le nombre d'iteration pour atteindre la clonalité. 
+
+
+
+
+	\begin{figure}[h]
+	\label{xp2}
+	\centering
+	\null\hfill
+	\subfloat[]{\includegraphics[scale=0.3]{pop100.png}} 
+	\hfill
+	\subfloat[]{\includegraphics[scale=0.3]{pop200.png}}
+	\hfill
+	\subfloat[]{\includegraphics[scale=0.3]{pop300.png}}
+	\hfill
+
+	\caption{Add your own figures before compiling}
+	\end{figure}
+
+	Au vu de ces résultats, il s'avère clairement que le nombre d’individu influence plus fortement le temps d' homogénisation que le nombre de gène. Ceci reste cohérent avec la simulation. Plus la population est grande, plus les gènes vont mettre un certain temps à se dilluer dans l'ensemble de la population. 
+
+
+	\subsection{Evolution de l'Evolvabilité}
+	L'Evolvabilité ou adaptabilité est la capacité des organismes vivant à s'adapter . celle ci est en étroite relation avec la variabilité de l'organisme. Plus la variation est grande, et plus une population sera apte à répondre à la sélection naturelle.. En contrepartie, cette variation peut entraîner des mutations préjudiciable à l'organisme. On appelle la robustesse, la capacité d'un organisme à résister aux mutations tout en maintenant un niveau de variabilité suffisant en vu d'un stress futur. C'est dans cette optique que les expériences suivante ont été réalisé. 
+
+	
+
+	\subsection{Mesure de la robustesse}
+	Une population de 300 individus de 5 gènes a été crée. Pour chaque enfant crée, une probabilité de mutation 0.1 a été défini. La simulation a été lancé sur 200 run. \\
+	Sur figure \ref{xp3} est represente la proportion d'individu non viable par iteration, assimulable à l'inverse de la robustesse. On observe ainsi qu'au cours des iterations, la population se stabilise est devient plus robuste au mutation.
+
+	
+	\begin{figure}[h]
+	\label{xp3}
+	\centering
+	\caption[test]{Evolution de la robustesse au cours des iterations }
+	\includegraphics[scale=0.4]{xp3.png}
+	\end{figure}
+
+	 \newpage
+
+	\subsection{Influence du nombre de gène sur la robustesse}
+	3 population avec  3 , 4 et 5 gènes ont été généré , puis ont évolué vers un état stable avec les même paramètres que précédemment. 
+	Ont été ensuite mesuré la robustesse pour chaques populations respective comme l'illustre la figure \ref{xp3.1}
+
+	\begin{figure}[h]
+	\label{xp3.1}
+	\centering
+	\caption[test]{Proportion d'individu non viable provenant d'une population évolué }
+	\includegraphics[scale=0.4]{xp3-1.png}
+	\end{figure}
+
+
+	Dans cette figure, plus le nombre de gène est faible, plus le système devient résistant au mutation. D'un point de vu biologique, cette experience invite à pensé à un compromis entre la complexité d'un réseau génétique et sa capacité d'adaptation. Un réseau trop complexe présenterait des difficulté à s'adapter.  \\
+
+
+	\subsection{Influence de la taille de la population}
+	1 population de 300 individu et une autre de 800 ont été généré avec 5 gènes. 200 itérations ont été lancé sur chacune d'elle. Puis à partir de ces deux populations évalué, la robustesse a été mesuré. \\
+	On observe sur la \ref{xp3.2} que la population de 300 individus atteinds plus rapidement la stabilité. En revanche, la robustesse diffère de très peu entre les deux populations. 
+
+
+	\begin{figure}[h]
+	\label{xp3.2}
+	\centering
+	\caption[test]{Proportion d'individu non viable provenant d'une population évolué }
+	\includegraphics[scale=0.4]{xp3-2.png}
+	\end{figure}
+
+	\subsection{Autre experience non décrite par manque de temps}
+	\begin{description}
+	  \item[Adaptation au Knock-out] \hfill \\
+	  Les populations deviennent égallement résistente au knockout ?
+	  \item[Duplication de gène] \hfill \\
+	  Quel est l'influence des duplications de gènes dans l'evolvabilité ? 
+	  \item[Influence du taux de mutation] \hfill \\
+	  Comment evolution la robustesse en fonction du taux de mutation ? \ldots
+	\end{description}
+
+
+	\section{Conclusion}
+
+
+
 	\end{document}
