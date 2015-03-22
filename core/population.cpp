@@ -124,7 +124,7 @@ void Population::run(int iteration)
     {
 
         int killed = next();
-        qDebug()<<QString("total: %2 total kill count:    %1").arg(killed).arg(mLists.size());
+        //qDebug()<<QString("total: %2 total kill count:    %1").arg(killed).arg(mLists.size());
 
         emit running(killed);
 
@@ -158,7 +158,7 @@ int Population::next(double proba, int step)
         }
         else {
             killed++;
-            qDebug()<<"non viable"<<child.raw();
+//            qDebug()<<"non viable"<<child.raw();
         }
     }
 
