@@ -44,9 +44,10 @@ void GenotypePixmap::draw()
             QRect r(x*box, y*box, box,box);
             painter.drawRect(r);
 
-
-
-            painter.drawText(r, Qt::AlignCenter,QString::number(mGenotype.at(x,y)));
+            QFont font = painter.font();
+            font.setPixelSize(box/2.5);
+            painter.setFont(font);
+            painter.drawText(r, Qt::AlignCenter,QString::number(mGenotype.at(x,y),'g',2));
 
 
 

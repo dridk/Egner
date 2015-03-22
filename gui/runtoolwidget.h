@@ -30,7 +30,7 @@ private:
     QPushButton * mRunButton;
     QPushButton * mClearGraph;
     QToolButton * mColorButton;
-    QProgressDialog * mProgressDialog;
+    QProgressBar * mProgressBar;
     QCustomPlot * mPlot;
     QCustomPlot * mHistPlot;
     QCheckBox * mPlotBox;

@@ -1,7 +1,7 @@
 #include "population.h"
 #include <QDebug>
 #include <QFile>
-
+#include "Individu.h"
 Population::Population(QObject * parent)
     :QObject(parent)
 {
@@ -44,39 +44,47 @@ int Population::count() const
     return mLists.count();
 }
 
-void Population::init(int count, double mean, double sd, int geneCount)
+
+GenotypeNetwork Population::randomGenotype(double mean, double sd, int geneCount, bool floating) const
 {
-    mLists.clear();
-
     std::random_device rd;
-
-
     std::default_random_engine generator(rd());
     std::normal_distribution<double> distribution(mean,sd);
 
+    GenotypeNetwork genotype;
 
-    // Create 'count' entity....
-    for (int i=0; i<count; ++i) {
+    while ((genotype.testViability() == false)){
+        genotype.clear();
+        for (int j=0; j<geneCount * geneCount; ++j){
+            double number;
+            if (floating)
+                number = distribution(generator);
+            else
+                number = qRound(distribution(generator)*10);
 
-        //Create random genotype
-        GenotypeNetwork genotype;
-
-
-
-        Phenotype lastPhenotype;
-        lastPhenotype.fill(1, geneCount);
-
-        while ((genotype.testViability() == false) || (genotype.lastPhenotype() != lastPhenotype)){
-            genotype.clear();
-            for (int j=0; j<geneCount * geneCount; ++j){
-                double number = qRound(distribution(generator)*10);
-                genotype.append(number);
-            }
+            genotype.append(number);
         }
-
-        append(genotype);
     }
 
+    return genotype;
+
+}
+
+void Population::init(int count, double mean, double sd, int geneCount, bool floating)
+{
+    mLists.clear();
+
+    // Create 'count' entity....
+    Phenotype refPhenotype;
+    while (mLists.count() < count)
+    {
+        GenotypeNetwork genotype = randomGenotype(mean,sd,geneCount,floating);
+        if (mLists.isEmpty())
+            refPhenotype = genotype.lastPhenotype();
+
+        if (genotype.lastPhenotype() == refPhenotype)
+            append(genotype);
+    }
 }
 
 void Population::disable(int gene, int count)
@@ -85,7 +93,7 @@ void Population::disable(int gene, int count)
 
     for (int i=0; i<count; ++i)
     {
-       mLists[i].disable(gene);
+        mLists[i].disable(gene);
 
     }
 }
@@ -131,7 +139,6 @@ int Population::next(double proba, int step)
 
         QList<GenotypeNetwork> parents = randomParent();
 
-        qDebug()<<"parents "<< parents.size();
 
         GenotypeNetwork maman = parents.first();
         GenotypeNetwork papa  = parents.last();
@@ -140,13 +147,39 @@ int Population::next(double proba, int step)
 
         child.mutate(proba, step);
 
-        if (child.testViability()){
+        Phenotype lastPhenotype;
+        lastPhenotype.fill(1, child.geneCount());
+
+        if (child.testViability()) {
             nextGeneration.append(child);
         }
         else {
             killed++;
             qDebug()<<"non viable"<<child.raw();
         }
+
+
+        Individu p (papa.raw());
+        Individu m (maman.raw());
+        Individu c (child.raw());
+
+        Individu iii(child.raw());
+
+
+
+        Individu test(p.getGenotype(), m.getGenotype(),1, papa.geneCount(), true);
+
+        qDebug()<<test.isViable();
+        if (!p.isViable())
+            qDebug()<<"NON VIABLE";
+
+        //        qDebug()<<child.testViability()<<" "<<c.isViable();
+
+        //        qDebug()<<child.raw();
+        //        qDebug()<<c.getGenotype();
+
+
+
     }
 
     // swap list
@@ -180,6 +213,8 @@ QList<GenotypeNetwork> Population::randomParent(int count)
     return parents;
 
 }
+
+
 
 void Population::load(const QString &filename)
 {
@@ -322,14 +357,14 @@ bool Population::isAllSame()
     if (mLists.isEmpty())
         return false;
 
-      GenotypeNetwork a = mLists.first();
+    GenotypeNetwork a = mLists.first();
 
 
-       foreach (GenotypeNetwork b , mLists)
-       {
-           if (a != b)
-               return false;
-       }
+    foreach (GenotypeNetwork b , mLists)
+    {
+        if (a != b)
+            return false;
+    }
 
 
 

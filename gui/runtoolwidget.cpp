@@ -10,6 +10,7 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     mMutationBox= new QDoubleSpinBox;
     mPlotBox = new QCheckBox;
     mHistBox = new QCheckBox;
+    mProgressBar = new QProgressBar;
     mAlgoBox = new QComboBox;
     mStepBox = new QSpinBox;
     mConvergeLabel = new QLabel;
@@ -22,9 +23,6 @@ RunToolWidget::RunToolWidget(QWidget * parent)
     setWindowTitle("Run");
 
 
-    mProgressDialog = new QProgressDialog(this);
-    mProgressDialog->setModal(true);
-    mProgressDialog->setVisible(false);
 
     mIterationBox->setRange(0,10000);
     mStepBox->setValue(1);
@@ -47,6 +45,7 @@ RunToolWidget::RunToolWidget(QWidget * parent)
 
     QVBoxLayout * all = new QVBoxLayout;
     all->addLayout(l);
+    all->addWidget(mProgressBar);
     all->addWidget(mClearGraph);
     all->addWidget(mRunButton);
 
@@ -73,10 +72,9 @@ void RunToolWidget::run()
     qDebug()<<"run...";
     int iteration = mIterationBox->value();
 
-    mProgressDialog->setVisible(true);
-    mProgressDialog->setLabelText("Computing...");
-    mProgressDialog->setWindowTitle("loading");
-    mProgressDialog->setRange(0,iteration);
+    mProgressBar->setFormat("Computing %p%");
+    mProgressBar->setRange(0,iteration);
+
     mConvergeLabel->setText("");
 
     mX.clear();
@@ -91,7 +89,7 @@ void RunToolWidget::run()
         int killed = population()->next(proba,step);
         mTotalKilled += killed;
 
-        mProgressDialog->setValue(i);
+        mProgressBar->setValue(i);
 
         if ((population()->isAllSame()  && (mConvergeLabel->text().isEmpty())))
             mConvergeLabel->setText(QString("%1").arg(i));
@@ -103,7 +101,7 @@ void RunToolWidget::run()
 
     }
 
-    mProgressDialog->setValue(iteration);
+    mProgressBar->setValue(iteration);
 
     if (mPlotBox->isChecked())
         showPlot();
@@ -186,7 +184,7 @@ void RunToolWidget::showHist()
 
     mHistPlot->resize(600,400);
 
-//    newGraph->rescaleAxes();
+    newGraph->rescaleAxes();
     mHistPlot->showNormal();
     mHistPlot->replot();
 

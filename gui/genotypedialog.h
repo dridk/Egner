@@ -18,6 +18,7 @@ public slots:
 private:
     GenotypeNetwork mGenotype;
     QLabel * mLabel;
+    QLineEdit * mRawEdit;
     QLineEdit * mPhenotypeEdit;
     QLineEdit * mResultsEdit;
 };

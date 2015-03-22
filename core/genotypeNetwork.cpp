@@ -187,17 +187,22 @@ bool GenotypeNetwork::testViability(const Phenotype &phenotype) const
     if (mVector.isEmpty())
         return false;
 
-    Phenotype currentPhenotype = phenotype;
     QSet<QString> history;
 
+    Phenotype currentPhenotype = phenotype;
+    currentPhenotype.normalize();
+
     QString current = currentPhenotype.raw();
-    QString old;
+    QString old = current;
 
     while (!history.contains(current)) {
-        history.insert(currentPhenotype.raw());
-        old = currentPhenotype.raw();
+
+        history.insert(current);
         currentPhenotype = currentPhenotype * (*this);
+        currentPhenotype.normalize();
+        old     = current;
         current = currentPhenotype.raw();
+
     }
     if ( old == current)
         return true;
@@ -222,7 +227,7 @@ bool GenotypeNetwork::testViability() const
 Phenotype GenotypeNetwork::lastPhenotype()
 {
     Phenotype p;
-    for (int i=0; i<geneCount(); ++i){
+    for (double i=0; i<geneCount(); ++i){
         p.append(1);
     }
 
@@ -231,21 +236,21 @@ Phenotype GenotypeNetwork::lastPhenotype()
 
 Phenotype GenotypeNetwork::lastPhenotype(const Phenotype &phenotype)
 {
-
-
-    Phenotype currentPhenotype = phenotype;
     QSet<QString> history;
+    Phenotype currentPhenotype = phenotype;
+    currentPhenotype.normalize();
 
     QString current = currentPhenotype.raw();
-    QString old;
 
     while (!history.contains(current)) {
-        history.insert(currentPhenotype.raw());
-        old = currentPhenotype.raw();
+
+        history.insert(current);
         currentPhenotype = currentPhenotype * (*this);
+        currentPhenotype.normalize();
         current = currentPhenotype.raw();
     }
-    return currentPhenotype;
+
+    return Phenotype(current);
 
 
 
@@ -273,7 +278,7 @@ GenotypeNetwork GenotypeNetwork::add(const GenotypeNetwork &other)
 
     }
 
-   return GenotypeNetwork(v);
+    return GenotypeNetwork(v);
 
 
 
@@ -288,7 +293,7 @@ bool GenotypeNetwork::operator==(const GenotypeNetwork &a)
 
 bool GenotypeNetwork::operator!=(const GenotypeNetwork &a)
 {
-        return vector() != a.vector();
+    return vector() != a.vector();
 }
 
 bool GenotypeNetwork::isSquare(int value)

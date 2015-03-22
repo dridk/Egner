@@ -19,12 +19,13 @@ public:
     GenotypeNetwork& operator[](int i);
     int count() const;
     void clear();
-    void init(int count, double mean=0, double sd=1, int geneCount=3);
+    void init(int count, double mean=0, double sd=1, int geneCount=3, bool floating = false);
     void disable(int gene, int count);
     void disableAll(int gene);
     int geneCount() const;
     QString toString() const;
     QList<GenotypeNetwork> randomParent(int count = 2);
+    GenotypeNetwork randomGenotype(double mean=0, double sd=1, int geneCount=3, bool floating=false) const;
 
     void load(const QString& filename);
     void save(const QString& filename);

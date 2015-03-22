@@ -5,7 +5,7 @@ Phenotype::Phenotype()
 
 }
 
-Phenotype::Phenotype(const QVector<int> &vector)
+Phenotype::Phenotype(const QVector<double> &vector)
 {
     foreach( int v, vector)
         append(v);
@@ -15,7 +15,7 @@ Phenotype::Phenotype(const QVector<int> &vector)
 Phenotype::Phenotype(const QString &raw)
 {
     foreach (QString v, raw.split(","))
-        append(v.toInt());
+        append(v.toDouble());
 
 }
 
@@ -24,19 +24,19 @@ Phenotype::~Phenotype()
     clear();
 }
 
-int Phenotype::at(int i) const
+double Phenotype::at(int i) const
 {
     return mVector.at(i);
 }
 
-void Phenotype::set(int i, int value)
+void Phenotype::set(int i, double value)
 {
-    mVector[i] = normalize(value);
+    mVector[i] = value;
 }
 
-void Phenotype::append(int value)
+void Phenotype::append(double value)
 {
-    mVector.append(normalize(value));
+    mVector.append(value);
 }
 
 int Phenotype::geneCount() const
@@ -49,13 +49,13 @@ void Phenotype::setGeneCount(int count)
     fill(1,count);
 }
 
-void Phenotype::fill(int value, int count)
+void Phenotype::fill(double value, int count)
 {
     clear();
     mVector.fill(value,count);
 }
 
-const QVector<int>& Phenotype::vector() const
+const QVector<double>& Phenotype::vector() const
 {
     return mVector;
 }
@@ -102,19 +102,28 @@ Phenotype Phenotype::cross(const GenotypeNetwork &other)
 {
     Q_ASSERT_X(other.geneCount()==geneCount(), "Phenotype","Phenotype and genotype have not the same genecount");
 
-    QVector<int> newVector(geneCount(),0);
+    QVector<double> newVector(geneCount(),0);
     int index = 0;
     // Genotype cross Phenotype => Matrice cross Vector
-    foreach (int m , other.vector()){
+    foreach (double m , other.vector()){
         int key  = index / geneCount();
         int mod  = index % geneCount();
-        int v = vector().at(mod);
+        double v = vector().at(mod);
         newVector[key] += m * v;
         index++;
     }
 
-    qDebug()<<newVector;
     return Phenotype(newVector);
+}
+
+void Phenotype::normalize()
+{
+   for (int i=0; i<mVector.size(); ++i)
+   {
+      mVector[i] = mVector[i] > 0 ? 1 : -1;
+   }
+
+
 }
 
 void Phenotype::clear()
@@ -122,10 +131,6 @@ void Phenotype::clear()
     mVector.clear();
 }
 
-int Phenotype::normalize(int value)
-{
-    return value > 0 ? 1 : -1;
-}
 
 
 

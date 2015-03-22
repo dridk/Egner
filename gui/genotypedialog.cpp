@@ -8,11 +8,15 @@ GenotypeDialog::GenotypeDialog(const GenotypeNetwork& g, QWidget * parent)
     mPhenotypeEdit = new QLineEdit;
     mResultsEdit = new QLineEdit;
     mLabel = new QLabel;
+    mRawEdit = new QLineEdit;
 
+    mRawEdit->setReadOnly(true);
+    mRawEdit->setText(g.raw());
     qDebug()<<mGenotype.raw();
     mLabel->setPixmap(GenotypePixmap(mGenotype,400));
 
     QVBoxLayout * l = new QVBoxLayout;
+    l->addWidget(mRawEdit);
     l->addWidget(mLabel);
     l->addWidget(mPhenotypeEdit);
     l->addWidget(mResultsEdit);
