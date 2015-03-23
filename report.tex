@@ -7,7 +7,7 @@
 \usepackage{float}
 \usepackage[caption = false]{subfig}
 
-\title {EGNER\\ Simulation d'un reseau de régulation de gène} 
+\title {EGNER\\ Simulation d'un réseau de régulation de gènes} 
 \author {Sacha Schutz}
 \date {\today}
 
@@ -17,31 +17,31 @@
 	\maketitle
 
 	\section{Introduction} % (fold)	
-	Cette étude porte sur la simulation d'un réseaux de régulation de gène reprenant le modèle introduit par A. Wagner. Il s'agit de représenter l'Evolution d'un population possédant n gène ayant tous une activité promotrice sur ces même n gènes. L'expression de ce réseau génétique, est défini par un phénotype viable ou non , subissant une pression de sélection au cours du temps. Afin de réaliser ces simulations, le logiciel Egner sous license GPL, a été créer permettant de définir plusieurs paramètre de simuation et d'observer des phénomènes emergents au modèle.
+	Cette étude porte sur la simulation d'un réseaux de régulation de gènes reprenant le modèle introduit par A. Wagner. Il s'agit de représenter l'Evolution d'un population possédant \emph{N} gène ayant tous une activité promotrice sur ces même \emph{N} gènes. L'expression de ce réseau génétique, est défini par un phénotype viable ou non, subissant une pression de sélection au cours du temps. Afin de réaliser ces simulations, le logiciel Egner sous licence GPL3, a été crée permettant de définir plusieurs paramètres de simulation et d'observer des phénomènes émergents au modèle.
 
 	\begin{figure}[h]
-	\label{figure1}
-	\caption[test]{Représentation d'un réseau de 3 gène }
+	\caption[test]{Représentation d'un réseau de 3 gènes }
 	\centering
 	\includegraphics[scale=0.5]{shema1.png}
+	\label{figure1}
 	\end{figure}
 
-	\section{Materiels et Méthodes} 
-	La modélisation de ce reseau génétique est illustré par la figure \ref{figure1}. L'activité represseur ou activateur des gènes est défini par une matrice de taille [NxN] ou N est le nombre de gène du reseau. Le phénotype, est quand à lui défini par un vecteur de taille [N]. \\
-	La simulation a été écris entièrement en C++11 afin de béneficier de la programmation orienté objets et de profiter d'une vitesse de calcul convenable. Le framework Qt \footnote{Pronnoncé Cute  http://www.qt.io} a quand à lui permis la réalisation d'une interface graphique permettant d'interagir et de faire des observartions sur la population. L'ensemble du code source est disponible sur \emph{https://github.com/dridk/Egner}
+	\section{Matériels et Méthodes} 
+	La modélisation de ce réseau génétique est illustré par la figure \ref{figure1}. L'activité répresseur ou activateur des gènes est défini par une matrice de taille N x N ou N est le nombre de gène du réseau. Le phénotype, est quand à lui défini par un vecteur de taille N. \\
+	La simulation a été écrite entièrement en C++11 afin de bénéficier de la programmation orienté objet et de profiter d'une vitesse de calcul convenable. Le framework Qt \footnote{Pronnoncé Cute} a quand à lui permis la réalisation d'une interface graphique permettant d'interagir et de faire des observations sur la population. L'ensemble du code source est disponible sur \emph{https://github.com/dridk/Egner}
 	\subsection {Architecture}
-	Le code source est divisé en 2 partie. Une partie appelé \textbf{Core} , contenant la logique pure et les classes de base nécessaires à la simulation. L'autre partie, appelé \textbf{Gui} contient les differents composants de l'interface graphique.
+	Le code source est divisé en 2 partie. Une partie appelé \textbf{Core} , contenant la logique pure et les classes de base nécessaires à la simulation. L'autre partie, appelé \textbf{Gui} contient les différents composants de l'interface graphique.
 	\subsubsection {Core}
-	Le réseau de gène a été modelisé sous forme d'une classe appelé \emph{GenotypeNetwork} contenant une matrice de dimension [NxN]. Cette classe possède des methodes d'écriture et de lecture des donnée matricielles ainsi que d'autre methodes pour générer des mutations aléatoire et des knockout de gène.
-	Le Phenotype est représenté par la classe  \emph{Phenotype}, contenant un vecteur de dimension [N] et ses methodes d'acces. 
-	La surcharge d'operateur, permise grâce au C++, a été appliqué a chacune de ces classes afin d'avoir des regles combinatoires. La code du listing \ref{code1} montre comment combiner 2 genotype avec eventuellement un crossing over.  Celui du listing \ref{code2}, comment effectuer le produit matricielle entre une genotype et un phenotype
+	Le réseau de gènes a été modelisé sous forme d'une classe appelé \emph{GenotypeNetwork} contenant une matrice de dimension NxN. Cette classe possède des méthodes d'écriture et de lecture des données matricielles ainsi que d'autre méthodes pour générer des mutations aléatoires et des knockout de gènes.
+	Le Phénotype est représenté par la classe  \emph{Phenotype}, contenant un vecteur de dimension N et ses méthodes d’accès. 
+	La surcharge d’opérateur, permise grâce au C++, a été appliqué a chacune de ces classes afin d'avoir des règles combinatoires. La code du listing \ref{code1} montre comment combiner 2 génotype avec éventuellement un crossing over.  Celui du listing \ref{code2}, comment effectuer le produit matricielle entre une génotype et un phénotype
 
 	\begin{lstlisting}[language=C++, caption=Addition de genotype, label={code1}]
 
 	GenotypeNetwork mother("0,0,2,4,1,7,5,0,4");
 	GenotypeNetwork father("0,1,0,3,1,0,5,4,4");
 	GenotypeNetwork child = mother + father
-	//donnera par exemple : 0,0,2,3,1,0,5,8,4
+	//donnera par exemple : 0,0,2,3,1,0,5,4,4
 	\end{lstlisting}
 
 	\begin{lstlisting}[language=C++, caption=produit d'un genotype et d'un phenotype, label={code2}]
@@ -52,12 +52,9 @@
 	//donnera : -1,-1,1
 	\end{lstlisting}
 
-	Tous les indivdus défini par un \emph{GenotypeNetwork} sont contenu dans un classe \emph{Population}. Cette classe contient les méthodes d'ajouts et de suppression des individus. Mais ce sont les methodes \emph{init(size, mean, sd, geneCount)} et \emph{int next()} qui reste les plus importante. La première permet l'initiation d'une population aléatoire de taille \emph{size}, oû chaques individus contient un nombre de gène défini par \emph{geneCount}, dont les coefficients suivent une loi normal de moyenne \emph{mean} et d'ecart type \emph{sd}. Le calcul de cette loi normal a été permise par l'utilisation du C++11 et de sa nouvelle librarie standard . \\
-	La deuxième permet de basculer de l'ancienne à la nouvelle population et retourne le nombre d'individu non viable qui a été crée. Ce basculement d'une popluation à l'autre a été optimisé par la methode swap(std::vector) de la std.
-	. Voir l'example du listing \ref{code3} 
+	Tous les individus défini par un \emph{GenotypeNetwork} peuvent être inséré dans un classe \emph{Population}. Cette classe contient les méthodes d'ajouts et suppression des individus. Mais ce sont les méthodes \emph{init(size, mean, sd, geneCount)} et \emph{int next()} qui reste les plus importante. La première permet l'initiation d'une population aléatoire de taille \emph{size}, oû chaque individu contient un nombre de gènes défini par \emph{geneCount}, dont les coefficients suivent une loi normale de moyenne \emph{mean} et d’écart type \emph{sd}. Le calcul de cette loi normale a été permise par l'utilisation du C++11 et de sa nouvelle librarie standard . \\
+	La methdode \emph{int next()} permet de basculer de l'ancienne à la nouvelle population et retourne le nombre d'individu non viable généré. Ce basculement d'une population à l'autre a été optimisé par la méthode \emph{swap(std::vector)} de la std. Voir l'example du listing \ref{code3} 
 	\\
-	\\
-
 	\begin{lstlisting}[language=C++, caption=Generation d'une population et basculement vers la génération suivante, label={code3}]
 
 	Population pop;
@@ -67,70 +64,64 @@
 	\end{lstlisting}
 
 	\subsubsection {Gui}
-	L'interface graphique a été réalisé grâce au Framework Qt. Disponible sous double license LGPL, Qt permet la création d'interface graphique de grande qualité et s'execute sous toutes les platformes windows, mac et linux. Les differents graphiques ont été réalisé avec la librairie QCustomPlot \footnote{www.qcustomplot.com} egalement sous license GPL. \\
-	Chaques GenotypeNetwork a été representé visuellement sous forme d'une matrice (figure \ref{figure2}) ou chaques coefficient est coloré suivant un gradient rouge vert.Ces deux couleurs representant respectivement la valeur minimal et maximal des coefficient sur l'ensemble de la population.
+	L'interface graphique a été réalisé grâce au Framework Qt \footnote{http://www.qt.io}. Disponible sous double licence LGPL/Commercial. Qt permet la création d'interface graphique de grande qualité et s’exécute sous toutes les platformes (windows, mac,linux, mobile) . Les différents graphiques ont été réalisé avec la librairie QCustomPlot \footnote{http://www.qcustomplot.com} également sous licence GPL. \\
+	Chaque \emph{GenotypeNetwork} a été représenté visuellement sous forme d'une matrice (figure \ref{figure2}) ou chaque coefficient est coloré suivant un gradient rouge vert. Ces deux couleurs correspondent respectivement à la valeur minimal et maximal des coefficients sur l'ensemble de la population.
 
 	\begin{figure}[h]
-	\label{figure2}
-	\caption[test]{Representation graphique d'un GenotypeNetwork }
+	\caption[test]{Représentation graphique d'un GenotypeNetwork }
 	\centering
 	\includegraphics[scale=1]{genotypepixmap.png}
+	\label{figure2}
 	\end{figure}
 
 
 	\clearpage
-	Le code source comprend 2 vues de la population courrante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure résume toutes les actions possible du logiciel.
+	L' interface comprend 2 vues de la population courante sur le panneau central et plusieurs outils sur le panneau de gauche pour manipuler la population. La figure \ref{gui} résume toutes les actions possible du logiciel.
 	\subsubsection {La Vue Grid}
-	Cette vue affiche la population courante en listant l'ensemble des genotypeNetwork par leurs representations graphiques. C'est une vision idéal pour observer les differentes valeurs des coefficients dans leurs globalité. 
+	Cette vue affiche la population courante en listant l'ensemble des \emph{GenotypeNetwork} par leurs représentations graphiques. C'est une vision idéal pour observer les différentes valeurs des coefficients dans leurs globalités. 
 	\subsubsection { La vue Stat}
-	Cette vue represente les frequences des coeffients pour chaques gènes. Ainsi, si la population est constitué d'indivdu avec 3 gènes, il y a yaura 9 coefficient, soit 9 histogramme. Cette representation est interessante, pour visualiser une population généré par une loi normal.
+	Cette vue représente les fréquences des coefficients pour chaque gène. Ainsi, si la population est constitué d’individu avec 3 gènes, il y a y aura 9 coefficients, soit 9 histogrammes. Cette représentation est intéressante, pour visualiser la répartition des coefficient dans la population.
 	\subsubsection {L'outil Initialisation}
-	Permet de générer une population initial en specifiant les propriétés de la loi normal ainsi que le nombre de gène par individus.
+	Permet de générer une population initiale en spécifiant les propriétés de la loi normale ainsi que le nombre de gène par individus.
 	\subsubsection{ L'outil Run}
-	Permet de lancer la simulation et possède les actions pour générer les graphique lineplot et histogram plot. LinePlot affiuche la courbe de viabilité global de la population pour chaques itération. tandis que Histogram Plot affiche la viabilité global depuis le dernier run. 
+	Permet de lancer la simulation et possède les actions pour générer les graphique \emph{lineplot} et \emph{histogramplot}. \emph{LinePlot} affiche la courbe de viabilité globale de la population pour chaque itération. tandis que \emph{HistogramPlot} affiche la viabilité global depuis le dernier run. 
 	\subsubsection{L'outil Knockout}
-	Permet de desactiver des gènes sur la population courante . Pour chaques individus, les coefficients du gènes selectionné sont mis à zero. 
+	Permet de désactiver des gènes sur la population courante . Pour chaque individu, les coefficients du gène sélectionné sont mis à zéro. 
 	\subsubsection{L'outil mutation}
-	Permet quand à lui de générer des mutation aléatoire sur la population en cours. En fonction de la probabilité défini, un nombre d'individu subira une mutation de ses coefficients par une addiction ou soustraction de la valeur Step.
-
-	
-
+	Permet quand à lui de générer des mutations aléatoires sur la population en cours. En fonction d'une probabilité défini, un nombre d'individu subira la mutation de ses coefficients par une addition ou soustraction de la valeur \emph{step}.
 
 	\section {Résultat}
-	Plusieurs experiences ont été réalisé avec le logiciel Egner. Ci dessous seront décris chaques expériences séparément avec leurs résultats .
+	Plusieurs expériences ont été réalisé avec le logiciel Egner. Ci dessous seront décris chaque expérience séparément avec leurs résultats .
 
 	\subsection{Convergence ou Contingence}
-	\subsubsection{Homogénisation de la population}
-	Lors de plusieurs essaie, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénéisation des génotypes. C'est à dire qu'a partir d'une population initial variable, on observe au bout de plusieurs itération, une population de clone avec le même génotype. La question était de savoir si ce dernier clone était le résultat d'une finalité optimal depuis la population initial, ou le résultat d'une contingence. \\
-	Une population initial aléatoire de 200 individus viable de 3 gène a été généré, puis sauvegarder dans un fichier xp1reference.txt. A partir de celui ci, plusieurs run de 2000 itération\footnote{Empiriquement, l'homogénisation se passe avant 2000 itération} ont été réalisé. Pour chaque run, le clone final a été sauvegardé. Comme vous pouvez le voir sur la figure \ref{xp1}, les clones finaux sont différents et ne convergent pas à priori vers un même génotype. 
+	\subsubsection{Homogénéisation de la population}
+	Lors de plusieurs essaies, a été remarqué, que sans aucune mutation, les populations convergent vers une homogénéisation des génotypes. C'est à dire qu'a partir d'une population initiale variable, on observe au bout de plusieurs itérations, une population de clone avec le même génotype. La question était de savoir si ce dernier clone était le résultat d'une finalité optimale depuis la population initiale, ou le résultat d'une contingence. \\
+	Une population initiale aléatoire de 200 individus viables de 3 gènes a été généré, puis sauvegardé dans un fichier. A partir de celui ci, 50 run de 2000 itérations\footnote{Empiriquement, l’homogénéisation se passe avant 2000 itération} ont été réalisé. Pour chaque run, le clone final a été sauvegardé. Comme vous pouvez le voir sur la figure \ref{xp1}, les clones finaux sont différents et ne convergent pas à priori vers un même génotype. 
 
 	\begin{figure}[h]
-	\label{xp1}
-	\caption[test]{Genotypes finaux à partir de la même population initial}
+	\caption[test]{5 premiers Génotypes finaux obtenu depuis la même population initiale}
 	\centering
 	\includegraphics[scale=0.5]{xp1.png}
+	\label{xp1}
 	\end{figure}
 
-
-	A partir des ces 50 clones obtenus, un box plot \ref{xp1.1} a alors été réalisé représentant la proportion des coefficients des différents génotype.
+	A partir des ces 50 clones obtenus, la figure \ref{xp1.1} a alors été réalisé représentant la proportion des coefficients des différents génotypes.
 
 	\begin{figure}[h]
-	\label{xp1.1}
 	\centering
 	\caption[test]{Repartition des coefficients des genotypes finaux sur 50 Runs depuis la même population initiale}
 	\includegraphics[scale=0.4]{xp1-1.png}
+	\label{xp1.1}
 	\end{figure}
 
+	On observe ainsi une grande répartition des coefficients. Par exemple le coefficient en position [0,1] varie de -20 à 20 et celui en position [1,1] varie de -10 à +12. Cependant, les coefficients ne prennent pas toutes les valeurs. Le coefficient en position (2,2) par exemple, ne prend jamais une valeur inférieur à 10. Ceci aurait pu s'expliquer par l'absence de valeur inférieur à 10 dans la population initiale à cette coordonnée précise. Hors, on en retrouve bien dans la population initiale, de plus est qu'elle suit une loi normale. \\ 
+	Il est donc supposable, qu'il existe un certain déterminisme dans l’évolution d'un réseau génétique. Connaissant une population initial, on pourrait prédire des probabilités d'apparition de certains coefficients. 
 
-	\subsubsection{ Temps d'homogénisation de la population}
-	A partir de la première expérience, une question s'est posé. Quels sont les facteurs influençant le vitesse d'homogenisation de la population. C'est à dire à partir de quel itération la population devient homogène. 
-	2 facteurs ont été testé. La taille de la population et le nombre de gène. 3 tailles de population initial ont été testé 100, 200 et 300 avec un nombre de gène variant de 3 à 5. Chaque combinaison a été testé 10 fois. Un boxplot \ref{xp2} a alors été réalisé pour chaque population. L'ordonnée représente le nombre d'iteration pour atteindre la clonalité. 
-
-
-
+	\subsubsection{ Temps d’homogénéisation de la population}
+	A partir de la première expérience, une question s'est posé. Quels sont les facteurs influençant le vitesse d'homogénéisation de la population. C'est à dire à partir de quelle itération la population devient homogène. 
+	2 facteurs ont été testé. La taille de la population et le nombre de gène. 3 tailles de population initiale ont été testé 100, 200 et 300 avec un nombre de gènes variant de 3 à 5. Chaque combinaison a été testé 10 fois. La figure \ref{xp2} a alors été réalisé pour chaque population. L'ordonnée représente le nombre d’itération pour atteindre la clonalité. 
 
 	\begin{figure}[h]
-	\label{xp2}
 	\centering
 	\null\hfill
 	\subfloat[]{\includegraphics[scale=0.3]{pop100.png}} 
@@ -139,57 +130,56 @@
 	\hfill
 	\subfloat[]{\includegraphics[scale=0.3]{pop300.png}}
 	\hfill
-
-	\caption{Add your own figures before compiling}
+	\caption{Temps d’homogénéisation pour 3 populations différentes et 3 gènes différents}
+	\label{xp2}
 	\end{figure}
 
-	Au vu de ces résultats, il s'avère clairement que le nombre d’individu influence plus fortement le temps d' homogénisation que le nombre de gène. Ceci reste cohérent avec la simulation. Plus la population est grande, plus les gènes vont mettre un certain temps à se dilluer dans l'ensemble de la population. 
+	Au vu de ces résultats, il s'avère clairement que le nombre d’individu influence plus fortement le temps d' homogénéisation que le nombre de gène. Dans la population à 300 individus le temps d’homogénéisation tourne autour de 600, alors que pour la population de 100 individus elle est de 300. Ceci reste cohérent avec la simulation. Plus la population est grande, plus les gènes vont mettre un certain temps à se diluer dans l'ensemble de la population. 
 
 
-	\subsection{Evolution de l'Evolvabilité}
-	L'Evolvabilité ou adaptabilité est la capacité des organismes vivant à s'adapter . celle ci est en étroite relation avec la variabilité de l'organisme. Plus la variation est grande, et plus une population sera apte à répondre à la sélection naturelle.. En contrepartie, cette variation peut entraîner des mutations préjudiciable à l'organisme. On appelle la robustesse, la capacité d'un organisme à résister aux mutations tout en maintenant un niveau de variabilité suffisant en vu d'un stress futur. C'est dans cette optique que les expériences suivante ont été réalisé. 
+	\subsection{Évolution de l'Evolvabilité}
+	L'Evolvabilité ou adaptabilité est la capacité des organismes vivants à s'adapter. celle ci est en étroite relation avec la variabilité de l'organisme. Plus la variation est grande, et plus une population sera apte à répondre à la sélection naturelle. En contrepartie, cette variation peut entraîner des mutations préjudiciables à l'organisme. On appelle la robustesse, la capacité d'un organisme à résister aux mutations tout en maintenant un niveau de variabilité suffisant en vu d'un stress futur. C'est dans cette optique que les expériences suivantes ont été réalisé sur le réseau génétique.
 
 	
-
-	\subsection{Mesure de la robustesse}
+	\subsubsection{Mesure de la robustesse}
 	Une population de 300 individus de 5 gènes a été crée. Pour chaque enfant crée, une probabilité de mutation 0.1 a été défini. La simulation a été lancé sur 200 run. \\
-	Sur figure \ref{xp3} est represente la proportion d'individu non viable par iteration, assimulable à l'inverse de la robustesse. On observe ainsi qu'au cours des iterations, la population se stabilise est devient plus robuste au mutation.
+	Sur la figure \ref{xp3} est représenté la proportion d'individu non viable par itération, assimilable à l'inverse de la robustesse. On observe ainsi qu'au cours des itérations, la population se stabilise est devient plus robuste au mutation.
 
 	
 	\begin{figure}[h]
-	\label{xp3}
 	\centering
-	\caption[test]{Evolution de la robustesse au cours des iterations }
+	\caption[test]{Évolution de la robustesse au cours des itérations }
 	\includegraphics[scale=0.4]{xp3.png}
+	\label{xp3}
 	\end{figure}
 
 	 \newpage
 
-	\subsection{Influence du nombre de gène sur la robustesse}
-	3 population avec  3 , 4 et 5 gènes ont été généré , puis ont évolué vers un état stable avec les même paramètres que précédemment. 
-	Ont été ensuite mesuré la robustesse pour chaques populations respective comme l'illustre la figure \ref{xp3.1}
+	\subsubsection{Influence du nombre de gène sur la robustesse}
+	3 population avec  3 , 4 et 5 gènes ont été généré , puis ont évolué vers un état stable avec les mêmes paramètres que précédemment. 
+	Ont été ensuite mesuré la robustesse pour chaque population respective comme l'illustre la figure \ref{xp3.1}
 
 	\begin{figure}[h]
-	\label{xp3.1}
 	\centering
 	\caption[test]{Proportion d'individu non viable provenant d'une population évolué }
 	\includegraphics[scale=0.4]{xp3-1.png}
+	\label{xp3.1}
 	\end{figure}
 
 
-	Dans cette figure, plus le nombre de gène est faible, plus le système devient résistant au mutation. D'un point de vu biologique, cette experience invite à pensé à un compromis entre la complexité d'un réseau génétique et sa capacité d'adaptation. Un réseau trop complexe présenterait des difficulté à s'adapter.  \\
+	Dans cette figure, plus le nombre de gène est faible, plus le système devient résistant au mutation. D'un point de vu biologique, cette expérience invite à penser un compromis entre la complexité d'un réseau génétique et sa capacité d'adaptation. Un réseau trop complexe présenterait des difficultés à s'adapter.  \\
 
 
-	\subsection{Influence de la taille de la population}
-	1 population de 300 individu et une autre de 800 ont été généré avec 5 gènes. 200 itérations ont été lancé sur chacune d'elle. Puis à partir de ces deux populations évalué, la robustesse a été mesuré. \\
-	On observe sur la \ref{xp3.2} que la population de 300 individus atteinds plus rapidement la stabilité. En revanche, la robustesse diffère de très peu entre les deux populations. 
+	\subsubsection{Influence de la taille de la population}
+	1 population de 300 individu et une autre de 800 ont été généré avec 5 gènes. 200 itérations ont été lancé sur chacune d'elle. Puis à partir de ces deux populations évoluées, la robustesse a été mesuré. \\
+	On observe sur la figure \ref{xp3.2} que la population de 300 individus attends plus rapidement la stabilité. En revanche, la robustesse diffère de très peu entre les deux populations. 
 
 
 	\begin{figure}[h]
-	\label{xp3.2}
 	\centering
-	\caption[test]{Proportion d'individu non viable provenant d'une population évolué }
+	\caption[test]{Proportion d'individu non viable provenant d'une population évoluée }
 	\includegraphics[scale=0.4]{xp3-2.png}
+	\label{xp3.2}
 	\end{figure}
 
 	\subsection{Autre experience non décrite par manque de temps}
@@ -197,14 +187,39 @@
 	  \item[Adaptation au Knock-out] \hfill \\
 	  Les populations deviennent égallement résistente au knockout ?
 	  \item[Duplication de gène] \hfill \\
-	  Quel est l'influence des duplications de gènes dans l'evolvabilité ? 
+	  Quel est l'influence des duplications de gènes  ? 
 	  \item[Influence du taux de mutation] \hfill \\
-	  Comment evolution la robustesse en fonction du taux de mutation ? \ldots
+	  Comment varie la robustesse en fonction du taux de mutation ? \ldots
 	\end{description}
 
 
 	\section{Conclusion}
+	L'Evolvabilité d'un réseau génétique, repose sur sa capacité à tamponner l'effet délétère des mutations. On observe dans ces simulations, que cette capacité est elle même un caractère visible au regard de la sélection naturelle. Ainsi, un réseau génétique possède la capacité de maintenir un certain taux de mutation, tout en absorbant les dommages des effets délétères. \\
+	Les premières expériences nous ont révélé quand elles que la composition d'une population initiale peut influencer le devenir d'une population.  D'autres expériences pourrait peut être nous éclairé sur les mécanismes régulateurs de l'ontogenèse et du principe de canalisation. C'est à dire, comment les réseaux régulateurs se différencient dans les différents tissues alors qu'elle provienne tous de la même cellule œuf.
 
+
+	\begin{figure}[h]
+	\centering
+	\caption[test]{Interface graphique d'Egner}
+	\includegraphics[scale=0.3, angle=90]{guituto.png}
+	\label{gui}
+
+	\end{figure}
+
+	\appendix
+	\section{Problèmes encourus}
+
+	J'ai été confronté à un gros problème qui m'a fait perdre beaucoup de temps. L’initialisation de ma population générait des individus viables avec le même phénotype. Mais je précisais que ce phénotype devait être {1,1,1,1,1}. De plus j'utilisais des coefficients entiers par soucis de clarté dans mes représentations graphiques. La conséquence était que tous les enfants de parents viables de phénotype {1,1,1,1,1} étaient viables. Il n'y avait donc aucune létalité, la population était toujours stable. 
+	J'ai donc changé mes conditions d’initialisation et ajouté une option pour utiliser des nombres à virgule. Cependant, il reste toujours un risque d'erreur. En Générant une population de 3 gènes avec des nombres entiers, il est possible d'avoir une population avec un phénotype {1,1,1} et se retrouver à nouveau confronté au problème.  
+
+
+	\section{Compilation du logiciel}
+
+\begin{description}
+  \item[Télécharger de Qt Créator] Télécharger la version opensource de Qt creator depuis le site http://www.qt.io/download/
+  \item[Récupérer le code source] Télécharger le code source depuis github sur la branche master. https://github.com/dridk/Egner 
+  \item[Compilation] Depuis Qt creator, ouvrir simplement le fichier Egner.pro et appuyer sur le gros boutton vert pour compiler et executer.
+\end{description}
 
 
 	\end{document}
